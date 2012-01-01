@@ -8,11 +8,11 @@ from django.utils.html import escape
 class DiffBot():
 
     @classmethod 
-    def get_article(klass, article_url):
+    def get_article_info(klass, article_url):
         url = "http://www.diffbot.com/api/article?"
         url += "token=" + constants.diffbot_key
         url += "&url=" + article_url
         url += "&html=true"
         response = requests.get(url)
-        text = simplejson.loads(response.text)
-        return text.get('html')
+        text_info = simplejson.loads(response.text)
+        return text_info

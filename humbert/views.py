@@ -42,13 +42,12 @@ def render_annotation(request, *args, **kwargs):
     c['username'] = username
     
     url = "http://www.paulgraham.com/start.html"
-
     #create annotation if the text doesn't exist
     annotations = Annotation.find_by_url(url)
     if annotations.count() <= 0:
         #create new annotation
         try:
-            text = DiffBot.get_article(url)
+            text_info = DiffBot.get_article(url)
             doc = {
                 'url':url,
                 'text':text
@@ -69,6 +68,32 @@ def logout_view(request):
     # /logout
     logout(request)
     return redirect('/?state=logged_out')
+
+
+def create_annotation(request):
+   
+    #takes a post
+    if request.method != 'POST':
+        redirect('/')
+
+    c = RequestContext(request)
+
+    url = request.POST.get('url')
+    text = request.POST.get('text')
+
+    if url:
+        text_info = Text.get_or_create_text_by_url(url)
+        c['text'] = text_info.get('text')
+        c['author'] = text_info.get('author')
+        c['url'] = url
+        c['title'] = text_info.get('title')
+    elif text:
+        c['text'] = text
+        Text.add_text({'text':text})
+    else:
+        redirect('/')
+
+    return render_to_response('annotation.html', c)
 
 
 #AJAX FUNCTIONS
@@ -96,24 +121,3 @@ def fb_login_with_token_and_id(request):
 
     print user.__dict__
     return HttpResponse('Hey client side, we just logged u in. -serverside out')
-
-def create_annotation(request):
-   
-    #takes a post
-    if request.method != 'POST':
-        redirect('/')
-
-    c = RequestContext(request)
-
-    url = request.POST.get('url')
-    text = request.POST.get('text')
-
-    if url:
-        c['text'] = Text.get_or_create_text_by_url(url)
-    elif text:
-        c['text'] = text
-        Text.add_text({'text':text})
-    else:
-        redirect('/')
-    import pdb; pdb.set_trace()
-    return render_to_response('annotation.html', c)

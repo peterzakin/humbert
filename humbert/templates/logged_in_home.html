@@ -35,7 +35,7 @@
   </ul>
 
   <div class="relative">
-    <form id="create_annotation_form" method="POST" action="/createp">
+    <form id="create_annotation_form" method="POST" action="/create">
       {% csrf_token %}
       <input class="input" type="text" name="url" placeholder="http://www.paulgraham.com/start" />
       <textarea class="input" name="text">Copy the text that you'd like to annotate here and click create to get started when you're ready</textarea>

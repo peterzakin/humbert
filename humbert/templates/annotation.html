@@ -2,13 +2,8 @@
 <body>
 
 <div class="container">
-{% include 'includes/header.html' %}
 
 <aside class="left">
-
-<div class="item">
-  <em>How to Start a Startup</em> by <b>Paul Graham</b>
-</div>
 
 <div id="notes">
   <div class="note">
@@ -29,6 +24,9 @@ Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh 
 
 </aside>
 
+<section class="right">
+<h3>{{author }}</h3>
+<h4>{{title}}</h4>
 
 <div id="annotation">
 
@@ -36,6 +34,7 @@ Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh 
 {{ text }} 
 {% endautoescape %}
 </div>
+</section>
 
 </div>
 

@@ -14,7 +14,7 @@ class Text(mongoMixIn):
     url,
     text,
     author,
-
+    title
     }
 
 
@@ -42,12 +42,14 @@ class Text(mongoMixIn):
 
         #get from diffbot. the text isnt stored here.
         #need to add error handling here.
-        text = DiffBot.get_article(url)
-        if text:
+        text_info = DiffBot.get_article_info(url)
+        if text_info:
             doc = {
-                'text': text,
-                'url':url,
+                'text': text_info.get('html'),
+                'url':text_info.get('url'),
+                'author':text_info.get('author'),
+                'title':text_info.get('title')
                 }
             klass.add_text(doc)
-
-        return text
+            text_info = doc
+        return text_info
