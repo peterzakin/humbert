@@ -9,8 +9,10 @@ urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'humbert.views.home', name='home'),
     # url(r'^humbert/', include('humbert.foo.urls')),
-      url(r'^$', home)
-
+      url(r'^$', home),
+#      url(r'^post/(?P<post_id>(\d)+)/?', post_page),
+      url(r'^(?P<username>(\w)+)/?$', render_profile),
+      url(r'^(?P<username>(\w)+)/(?P<annotation_id>(\d)+)/?$', render_annotation),
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
