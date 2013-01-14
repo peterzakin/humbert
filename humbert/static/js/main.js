@@ -1,3 +1,3 @@
 $(document).ready(function(){
-    alert('fuckya');
+    console.log("mountaineer to base camp");
 });
