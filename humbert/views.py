@@ -1,6 +1,8 @@
+import sys
 import string
 import re
 from django.shortcuts import render_to_response
+from lib.diffbotHelper import DiffBot 
 
 def home(request):
     c = {}
@@ -25,5 +27,6 @@ def render_annotation(request, *args, **kwargs):
     c = {}
     c['username'] = username
     c['annotation_id'] = annotation_id
+    c['text'] = DiffBot.get_article('http://danbri.org/words/2013/01/13/815')
     return render_to_response('annotation.html', c)
 
