@@ -78,3 +78,6 @@ alias pydoc="python -m pydoc"
 if [ -n "$BASH" -o -n "$ZSH_VERSION" ] ; then
     hash -r 2>/dev/null
 fi
+
+DJANGO_ENVIRONMENT="test_env"
+export DJANGO_ENVIRONMENT

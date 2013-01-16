@@ -1,11 +1,14 @@
 import sys
 import string
 import re
+import constants
 from django.shortcuts import render_to_response
 from lib.diffbotHelper import DiffBot 
 
+
 def home(request):
     c = {}
+    c['env'] = constants.ENVIRONMENT
     return render_to_response('index.html', c)
 
 def post_page(request, post_id):

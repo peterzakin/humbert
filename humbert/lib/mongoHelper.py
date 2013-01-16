@@ -2,12 +2,12 @@
 import sys
 sys.path.append('humbert/')
 import pymongo
-import constants.py
+import constants
 
 class mongoHelper():
      
     def connect(self):
-        if self.ENVIRONMENT == 'test':
+        if constants.ENVIRONMENT == 'test':
             return self._connect_on_dev()
         else:
             return self._connect_on_prod()
@@ -20,4 +20,4 @@ class mongoHelper():
     def _connect_on_dev(self):
         connection = pymongo.MongoClient()
         return connection 
- 
+
