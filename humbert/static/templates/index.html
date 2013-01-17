@@ -1,6 +1,5 @@
 {% include 'header.html' %}
 <body>
- <script src="//connect.facebook.net/en_US/all.js"></script>
 
 <div id="fb-root"></div>
 <script>
@@ -14,16 +13,17 @@
     });
 
     // Additional init code here
-  FB.getLoginStatus(function(response) {
-  if (response.status === 'connected') {
-    // connected
-  alert('connected');
-  console.log(response)
-  token = response.authResponse.accessToken;
-
-  FB.api('/me', function(response) {
+    FB.getLoginStatus(function(response) {
+    if (response.status === 'connected') {
+        // connected
+         alert('connected');
+         console.log(response)
+         token = response.authResponse.accessToken;
+  
+        FB.api('/me', function(response) {
         console.log('Good to see you, ' + response.name + '.');
-    });
+  var name = response.name;
+         });
   } else if (response.status === 'not_authorized') {
     // not_authorized
   } else {
@@ -31,6 +31,7 @@
   }
   });
 
+    $('.right').text(name);
   };
 
   // Load the SDK Asynchronously
@@ -43,8 +44,11 @@
    }(document));
 
 </script>
+<div class="container">
+  <span class="right">
 
+    </span>
+</div>
 
-"hi peter"
 <!-- closes body and html tags -->
 {% include 'footer.html' %}
