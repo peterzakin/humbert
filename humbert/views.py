@@ -15,6 +15,9 @@ def post_page(request, post_id):
     c['post_id'] = post_id
     return render_to_response('post_page.html', c)
 
+def channel(request):
+    c = {}
+    return render_to_response('channel.html', c)
 
 def render_profile(request, *args, **kwargs):
     username = kwargs.get('username')

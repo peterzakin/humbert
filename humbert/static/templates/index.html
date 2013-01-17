@@ -1,40 +1,48 @@
 {% include 'header.html' %}
 <body>
+ <script src="//connect.facebook.net/en_US/all.js"></script>
 
 <div id="fb-root"></div>
-      <script>
-        window.fbAsyncInit = function() {
-          FB.init({
-            appId      : '470297626362026', // App ID
-            channelUrl : '//WWW.humbert.herokuapp.com',
-            status     : true, // check login status
-            cookie     : true, // enable cookies to allow the server to access the session
-            xfbml      : true  // parse XFBML
-          });
-          FB.api('/me', function(user) {
-            if (user) {
-              var image = document.getElementById('image');
-              image.src = 'https://graph.facebook.com/' + user.id + '/picture';
-              var name = document.getElementById('name');
-              name.innerHTML = user.name
-            }
-          });
-        };
-        // Load the SDK Asynchronously
-        (function(d){
-           var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
-           if (d.getElementById(id)) {return;}
-           js = d.createElement('script'); js.id = id; js.async = true;
-           js.src = "//connect.facebook.net/en_US/all.js";
-           ref.parentNode.insertBefore(js, ref);
-         }(document));
-      </script>
+<script>
+  // Additional JS functions here
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '470297626362026', // App ID
+      status     : true, // check login status
+      cookie     : true, // enable cookies to allow the server to access the session
+      xfbml      : true  // parse XFBML
+    });
 
-      <div align="center">
-        <img id="image"/>
-        <div id="name"></div>
-      </div>
+    // Additional init code here
+  FB.getLoginStatus(function(response) {
+  if (response.status === 'connected') {
+    // connected
+  alert('connected');
+  console.log(response)
+  token = response.authResponse.accessToken;
 
+  FB.api('/me', function(response) {
+        console.log('Good to see you, ' + response.name + '.');
+    });
+  } else if (response.status === 'not_authorized') {
+    // not_authorized
+  } else {
+  // not_logged_in
+  }
+  });
+
+  };
+
+  // Load the SDK Asynchronously
+  (function(d){
+     var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement('script'); js.id = id; js.async = true;
+     js.src = "//connect.facebook.net/en_US/all.js";
+     ref.parentNode.insertBefore(js, ref);
+   }(document));
+
+</script>
 
 
 "hi peter"
