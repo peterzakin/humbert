@@ -16,7 +16,6 @@
     FB.getLoginStatus(function(response) {
     if (response.status === 'connected') {
         // connected
-         alert('connected');
          console.log(response)
          token = response.authResponse.accessToken;
   
@@ -26,6 +25,7 @@
          });
   } else if (response.status === 'not_authorized') {
     // not_authorized
+
   } else {
   // not_logged_in
   }
@@ -43,11 +43,32 @@
      ref.parentNode.insertBefore(js, ref);
    }(document));
 
+  function login() {
+    FB.login(function(response) {
+        if (response.authResponse) {
+            // connected
+             $('.status').text('You are Connected');
+        } else {
+            // cancelled
+        }
+  });
+  }
+
 </script>
 <div class="container">
+  <header>
+    Welcome to Humbert. <a onClick=login()>Login</a>
+  </header>
   <span class="right">
 
     </span>
+
+  <div class="status">
+    Not connected.
+  </div>
+
+
+  {% include 'mock_annotation.html' %}
 </div>
 
 <!-- closes body and html tags -->

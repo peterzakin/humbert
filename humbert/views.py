@@ -8,6 +8,8 @@ from lib.diffbotHelper import DiffBot
 
 def home(request):
     c = {}
+    c['text'] = DiffBot.get_article('http://www.paulgraham.com/stuff.html');
+        
     return render_to_response('index.html', c)
 
 def post_page(request, post_id):
@@ -32,6 +34,6 @@ def render_annotation(request, *args, **kwargs):
     c = {}
     c['username'] = username
     c['annotation_id'] = annotation_id
-    c['text'] = DiffBot.get_article('http://danbri.org/words/2013/01/13/815')
+    c['text'] = DiffBot.get_article('http://www.paulgraham.com/stuff.html')
     return render_to_response('annotation.html', c)
 

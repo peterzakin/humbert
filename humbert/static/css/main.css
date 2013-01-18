@@ -1,6 +1,13 @@
+body{
+    font-family:Helvetica;
+}
 .container{
     margin: 0 auto;
     width:900px;
     position:relative;
-    
+}
+
+#annotation{
+    width: 600px;
+    font-size:12px;
 }
