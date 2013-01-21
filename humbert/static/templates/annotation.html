@@ -2,4 +2,8 @@ username is {{username}}
 
 annotation id is {{annotation_id}}
 
+<div id="annotation">
+{% autoescape off %}
 annotation text is: {{ text }} 
+{% endautoescape %}
+</div>
