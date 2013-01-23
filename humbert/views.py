@@ -7,6 +7,7 @@ from lib.diffbotHelper import DiffBot
 
 
 def home(request):
+    request.session['peter'] = 'zakin'
     c = {}
         
     return render_to_response('index.html', c)
@@ -23,7 +24,7 @@ def channel(request):
 def render_profile(request, *args, **kwargs):
     username = kwargs.get('username')
     c = {}
-    
+    c['peter'] = request.session.get('peter')
     profile_user = User.find_by_username(username)
     if profile_user is not None:
 
@@ -49,6 +50,3 @@ def add_annotation(request):
     annotations = Annotation.find_by_url(url)
     if annotations.count() == 0:
         c['text'] = Diffbot.get_article(url)
-    else:
-        
-

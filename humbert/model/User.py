@@ -1,17 +1,8 @@
-import sys
-sys.path.append('humbert/')
-import os
-import constants
-from pymongo import ASCENDING, DESCENDING
-from mongoMixIn import mongoMixIn
+from django.db import models
+from django.contrib.auth.models import User
 
-class User(mongoMixIn):
-    DB_NAME = 'core_humbert_data'
-    COLLECTION = 'Users'
-    
-    #def __init__(self, doc):
-     #   self.__dict__.update(doc)
+class Profile(User):
+    fb_id = models.IntegerField(default=0)
 
-    @classmethod
-    def add_user(klass, doc): 
-        return klass.mdbc().insert(doc)
+    class Meta:
+        app_label = "humbert"
