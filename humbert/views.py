@@ -1,3 +1,4 @@
+from django.contrib.auth import authenticate, login
 import sys
 import string
 import re
@@ -6,6 +7,7 @@ from django.shortcuts import render_to_response
 from lib.diffbotHelper import DiffBot 
 from django.template import RequestContext
 from model.User import User, Profile
+from django.http import HttpResponse
 
 def home(request):
     c = RequestContext(request)
@@ -58,12 +60,9 @@ def fb_login_with_token_and_id(request):
     access_token = request.POST.get('access_token')
     user_set = Profile.objects.filter(fb_id=fb_id)
 
-    import pdb; pdb.set_trace()
-
     if len(user_set) == 0:
         # create new user
         user = Profile.create_new_fb_user(fb_id, access_token)
-        import pdb; pdb.set_trace()
         if user is not None:
             #if we created the user alright lets log him in 
             user.backend = 'django.contrib.auth.backends.ModelBackend'    
@@ -73,6 +72,6 @@ def fb_login_with_token_and_id(request):
         user = user_set[0]
         user.backend = 'django.contrib.auth.backends.ModelBackend'    
         login(request,user)
-        
-    return
 
+    import pdb; pdb.set_trace()
+    return HttpResponse('')
