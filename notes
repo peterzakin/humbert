@@ -1,5 +1,8 @@
 use OnClick for FB login
 
+For FB Signup, we can extend the token for 60 days, but how is that practical.
+
+
 Steps:
 1. Get signup.
 2. Create diffbot entry

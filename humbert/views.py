@@ -4,12 +4,11 @@ import re
 import constants
 from django.shortcuts import render_to_response
 from lib.diffbotHelper import DiffBot 
-
+from django.template import RequestContext
+from model.User import User, Profile
 
 def home(request):
-    request.session['peter'] = 'zakin'
-    c = {}
-        
+    c = RequestContext(request)
     return render_to_response('index.html', c)
 
 def post_page(request, post_id):
@@ -50,3 +49,30 @@ def add_annotation(request):
     annotations = Annotation.find_by_url(url)
     if annotations.count() == 0:
         c['text'] = Diffbot.get_article(url)
+
+
+#AJAX FUNCTIONS
+def fb_login_with_token_and_id(request):
+    #check to see if we have a user with this fb_id
+    fb_id = request.POST.get('fb_id')
+    access_token = request.POST.get('access_token')
+    user_set = Profile.objects.filter(fb_id=fb_id)
+
+    import pdb; pdb.set_trace()
+
+    if len(user_set) == 0:
+        # create new user
+        user = Profile.create_new_fb_user(fb_id, access_token)
+        import pdb; pdb.set_trace()
+        if user is not None:
+            #if we created the user alright lets log him in 
+            user.backend = 'django.contrib.auth.backends.ModelBackend'    
+            login(request,user)
+            
+    else:
+        user = user_set[0]
+        user.backend = 'django.contrib.auth.backends.ModelBackend'    
+        login(request,user)
+        
+    return
+
