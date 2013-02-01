@@ -10,6 +10,7 @@ urlpatterns = patterns('',
     # url(r'^$', 'humbert.views.home', name='home'),
     # url(r'^humbert/', include('humbert.foo.urls')),
       url(r'^$', home),
+      url(r'^logout/?$', logout_view),
 #      url(r'^post/(?P<post_id>(\d)+)/?', post_page),
       url(r'^ajax/fb_login/?$', fb_login_with_token_and_id),
 

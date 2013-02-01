@@ -5,7 +5,7 @@
 <script>
 
 
-
+ var re;
 var token; 
   // Additional JS functions here
 window.fbAsyncInit = function() {
@@ -21,8 +21,9 @@ window.fbAsyncInit = function() {
     if (response.status === 'connected') {
         // connected
         FB.api('/me', function(response) {
-            //        console.log('Good to see you, ' + response.name + '.');
-
+               console.log('Good to see you, ' + response.name + '.');
+               console.log(response);
+               re = response
             //fb_user_logged_in(response);
             //NOTE: HERE WHAT WE WANT IS FOR THE USER TO LOG IN. Make an ajax request and then redirect
         });

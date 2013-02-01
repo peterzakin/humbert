@@ -3,15 +3,22 @@ import sys
 import string
 import re
 import constants
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, redirect
 from lib.diffbotHelper import DiffBot 
 from django.template import RequestContext
 from model.User import User, Profile
 from django.http import HttpResponse
+from django.contrib.auth import logout
 
 def home(request):
     c = RequestContext(request)
-    return render_to_response('index.html', c)
+    if request.user.is_authenticated():
+        Profile.init_session(request)
+        c['bio'] = request.session['bio']
+        return render_to_response('logged_in_home.html', c)
+
+    return render_to_response('landing.html', c)
+
 
 def post_page(request, post_id):
     c = {}
@@ -53,6 +60,11 @@ def add_annotation(request):
         c['text'] = Diffbot.get_article(url)
 
 
+def logout_view(request):
+    # /logout
+    logout(request)
+    return redirect('/?state=logged_out')
+
 #AJAX FUNCTIONS
 def fb_login_with_token_and_id(request):
     #check to see if we have a user with this fb_id
@@ -70,8 +82,11 @@ def fb_login_with_token_and_id(request):
             
     else:
         user = user_set[0]
+        #update the access token
+        user.renew_token(access_token)
         user.backend = 'django.contrib.auth.backends.ModelBackend'    
         login(request,user)
 
-    import pdb; pdb.set_trace()
-    return HttpResponse('')
+    print user.__dict__
+    return HttpResponse('Hey client side, we just logged u in. -serverside out')
+
