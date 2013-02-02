@@ -3,6 +3,8 @@ from django.db import models
 from django.contrib.auth.models import User
 import requests
 import simplejson
+import constants 
+from django.http import QueryDict
 
 class Profile(User):
     fb_id = models.IntegerField(default=0)
@@ -31,9 +33,6 @@ class Profile(User):
         if user_dict.get('error') is not None:
             self.handle_fb_errors(user_dict.get('error'))
         
-
-
-
         print user_dict
         return user_dict
 
@@ -51,18 +50,19 @@ class Profile(User):
     def get_profile(klass, user):
         return klass.objects.get(id=user.id)
 
-    def renew_token(self, token):
-        # check that the token is the same
-        if token != self.access_token and token not in [None, '']:
-            #either this is a bad auth
-            # or we need to update the access token
-            self.access_token = token
-            self.save()
-
     def handle_fb_errors(self, error):
         pass
 
-    def extend_token(self):
-        url = https://graph.facebook.com/oauth/access_token?client_id=%&client_secret=%s&grant_type=fb_exchange_token&fb_exchange_token=%s % (constants.client_id, constants.client_secret, self.access_token)
-        response = request.get(url).text
+    def extend_token(self, access_token):
+        url = "https://graph.facebook.com/oauth/access_token?client_id=%s&client_secret=%s&grant_type=fb_exchange_token&fb_exchange_token=%s" % (constants.client_id, constants.client_secret, access_token)
+        response = requests.get(url)
+        qd = QueryDict(response.text)
+        access_token = qd.get('access_token')
+        expiry_date = qd.get('expires')
+
+        if access_token is not None:
+            self.access_token = access_token
+            self.save()
+
+        return access_token, expiry_date
         

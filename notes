@@ -1,6 +1,8 @@
 use OnClick for FB login
 
-For FB Signup, we can extend the token for 60 days, but how is that practical.
+FB signup:
+User goes through flow when hes not logged in.  (this doesnt solve the problem of, user may be logged in to service when the token expires. he needs to go thorugh the auth process again)
+We extend his token. It takes a while, so we should probably get his info and just make it a background process. Or throw up a dial.
 
 
 Steps:

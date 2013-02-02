@@ -83,7 +83,7 @@ def fb_login_with_token_and_id(request):
     else:
         user = user_set[0]
         #update the access token
-        user.renew_token(access_token)
+        user.extend_token(access_token)
         user.backend = 'django.contrib.auth.backends.ModelBackend'    
         login(request,user)
 
