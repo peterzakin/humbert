@@ -5,6 +5,10 @@ import requests
 import simplejson
 import constants 
 from django.http import QueryDict
+from django.shortcuts import redirect
+import logging
+
+from lib.Errors import Errors
 
 class Profile(User):
     fb_id = models.IntegerField(default=0)
@@ -30,10 +34,13 @@ class Profile(User):
         url = 'https://graph.facebook.com/me?access_token=%s' % (access_token)
         response = requests.get(url).text
         user_dict = simplejson.loads(response)
-        if user_dict.get('error') is not None:
-            self.handle_fb_errors(user_dict.get('error'))
         
-        print user_dict
+        import pdb; pdb.set_trace()
+
+        if user_dict.get('error') is not None:
+           # klass.handle_fb_errors(user_dict.get('error'))
+            return redirect('/logout')
+        logging.info(user_dict)
         return user_dict
 
     @classmethod
@@ -44,13 +51,16 @@ class Profile(User):
     def init_session(klass, request):
         if 'profile' not in request.session:
             request.session['profile'] = Profile.get_profile(request.user)
-            request.session.update(Profile.get_fb_user_dict(request.session['profile'].access_token))
-
+            try:
+                request.session.update(Profile.get_fb_user_dict(request.session['profile'].access_token))
+            except Errors.fb_error:
+                redirect('/logout')
     @classmethod
     def get_profile(klass, user):
         return klass.objects.get(id=user.id)
 
-    def handle_fb_errors(self, error):
+    @classmethod
+    def handle_fb_errors(klass, error):
         pass
 
     def extend_token(self, access_token):
@@ -60,9 +70,13 @@ class Profile(User):
         access_token = qd.get('access_token')
         expiry_date = qd.get('expires')
 
+        import pdb; pdb.set_trace()
+
+
         if access_token is not None:
             self.access_token = access_token
             self.save()
 
         return access_token, expiry_date
         
+

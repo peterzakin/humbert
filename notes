@@ -4,6 +4,12 @@ FB signup:
 User goes through flow when hes not logged in.  (this doesnt solve the problem of, user may be logged in to service when the token expires. he needs to go thorugh the auth process again)
 We extend his token. It takes a while, so we should probably get his info and just make it a background process. Or throw up a dial.
 
+BAD TOKEN RESPONSE:
+{'cookies': <<class 'requests.cookies.RequestsCookieJar'>[]>, '_content': '{"error":{"message":"Invalid OAuth access token.","type":"OAuthException","code":190}}',
+ 'headers': {'content-length': '86', 'expires': 'Sat, 01 Jan 2000 00:00:00 GMT', 'x-fb-debug': 'qdut2/AgBtdiUZUHAGC2yiH57RSvKHnpfQWWhy4g1l8=',
+ 'x-fb-rev': '727171', 'connection': 'keep-alive', 'pragma': 'no-cache', 'cache-control': 'no-store', 'date': 'Sat, 02 Feb 2013 20:55:48 GMT', 'access-control-allow-origin': '*', 'content-type': 'text/javascript; charset=UTF-8', 'www-authenticate': 'OAuth "Facebook Platform" "invalid_token" "Invalid OAuth access token."'}, 
+'url': u'https://graph.facebook.com/oauth/access_token?client_id=470297626362026&client_secret=19bde156d8fa8a68f56a1800e34f8aa0&grant_type=fb_exchange_token&fb_exchange_token=peter', 'status_code': 400, '_content_consumed': True, 'encoding': 'UTF-8', 'request': <PreparedRequest [GET]>, 'connection': <requests.adapters.HTTPAdapter object at 0x10409b0d0>, 'raw': <requests.packages.urllib3.response.HTTPResponse object at 0x104a9d7d0>, 'reason': 'Bad Request', 'history': []}
+
 
 Steps:
 1. Get signup.

@@ -12,6 +12,7 @@ from django.contrib.auth import logout
 
 def home(request):
     c = RequestContext(request)
+    import pdb; pdb.set_trace()
     if request.user.is_authenticated():
         Profile.init_session(request)
         c['bio'] = request.session['bio']
