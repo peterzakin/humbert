@@ -35,11 +35,9 @@ class Profile(User):
         response = requests.get(url).text
         user_dict = simplejson.loads(response)
         
-        import pdb; pdb.set_trace()
-
         if user_dict.get('error') is not None:
-           # klass.handle_fb_errors(user_dict.get('error'))
-            return redirect('/logout')
+            raise Errors.fb_error
+
         logging.info(user_dict)
         return user_dict
 
@@ -52,9 +50,11 @@ class Profile(User):
         if 'profile' not in request.session:
             request.session['profile'] = Profile.get_profile(request.user)
             try:
-                request.session.update(Profile.get_fb_user_dict(request.session['profile'].access_token))
+                fb_info = Profile.get_fb_user_dict(request.session['profile'].access_token)
+                request.session.update(fb_info)
             except Errors.fb_error:
                 redirect('/logout')
+
     @classmethod
     def get_profile(klass, user):
         return klass.objects.get(id=user.id)
@@ -69,9 +69,6 @@ class Profile(User):
         qd = QueryDict(response.text)
         access_token = qd.get('access_token')
         expiry_date = qd.get('expires')
-
-        import pdb; pdb.set_trace()
-
 
         if access_token is not None:
             self.access_token = access_token
