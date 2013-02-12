@@ -1,6 +1,24 @@
-<h1>Welcome {{ first_name }}. You are logged in.</h1>
+{% include 'header.html' %}
+<body>
+
+<div class="container">
+
+	<header>
+	How to Start a Startup
+	</header>
+	{% autoescape off %}
+	
+	{{ text }}
+	
+	{% endautoescape %}
+</div>
 
 
+<div id="top_right">
+<a href="/logout">Logout</a>
+
+</div>
 
 
-<div> bio is {{bio}} </div>
+<!-- closes body and html tags -->
+{% include 'footer.html' %}

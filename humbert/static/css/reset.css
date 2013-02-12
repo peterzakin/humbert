@@ -83,3 +83,7 @@ button{
     -webkit-border-radius:2px;
     font-weight:500;
 }
+
+a{
+	text-decoration:none;
+}

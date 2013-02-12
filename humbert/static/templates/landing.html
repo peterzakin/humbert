@@ -50,7 +50,7 @@ function login() {
     FB.login(function(response) {
         if (response.authResponse) {
             // connected
-            $('.status').text('You are Connected');
+           // $('.status').text('You are Connected');
             //console.log(response.authResponse.accessToken);
             humbert_login(response);
             //move dude over to register or login, depending on whether he has stored this token with us
@@ -94,26 +94,17 @@ humbert_login = function(response){
 </script>
 <div class="container">
   <header>
-    Welcome to Humbert. <a onClick=login()>Login</a>
-  </header>
-  <span class="right">
+    Welcome to Humbert. 
+  </header>  
 
-    </span>
-
-  <div class="status">
-    Not connected.
-  </div>
-
-  <div class='peter'>
-    {{ peter }}
-    </div>
-
-  <div id='logged_in_window'>
-    
-  </div>
-
-  {% include 'mock_annotation.html' %}
+	<p>
+	Humbert is a place to annotate the work of others. 
+	</p>
 </div>
 
+<div id="top_right">
+<a onClick=login()>Login</a>
+
+</div>
 <!-- closes body and html tags -->
 {% include 'footer.html' %}

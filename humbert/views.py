@@ -10,10 +10,13 @@ from model.User import User, Profile
 from django.http import HttpResponse
 from django.contrib.auth import logout
 
+
 def home(request):
     c = RequestContext(request)
     if request.user.is_authenticated():
         Profile.init_session(request)
+        url = "http://www.paulgraham.com/start.html"
+        c['text'] = DiffBot.get_article(url)
         c['bio'] = request.session['bio']
         return render_to_response('logged_in_home.html', c)
 
@@ -71,6 +74,8 @@ def fb_login_with_token_and_id(request):
     fb_id = request.POST.get('fb_id')
     access_token = request.POST.get('access_token')
     user_set = Profile.objects.filter(fb_id=fb_id)
+
+    # could probably change this to access token; i.e lookup by access token and not id
 
     if len(user_set) == 0:
         # create new user
