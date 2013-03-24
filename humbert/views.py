@@ -43,10 +43,27 @@ def render_annotation(request, *args, **kwargs):
     c['username'] = username
     
     url = "http://www.paulgraham.com/start.html"
-    c['text'] = DiffBot.get_article(url)
+
+    #create annotation if the text doesn't exist
+    annotation = Annotation.find_by_url(url)
+    if annotation is None:
+        #create new annotation
+        try:
+            import pdb; pdb.set_trace()
+            text = DiffBot.get_article(url)
+            doc = {
+                'url':url,
+                'text':text
+                }
+            Annotation.add_annotation(doc)
+            c['text'] = text
+        except:
+            raise Exception('oh shit diffbot')
+    else:
+        #annotation exists
+        c['text'] = annotation.text
 
     return render_to_response('annotation.html', c)
-
 
 def logout_view(request):
     # /logout

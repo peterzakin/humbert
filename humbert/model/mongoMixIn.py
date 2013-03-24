@@ -7,9 +7,6 @@ from bson.objectid import ObjectId
 
 
 class mongoMixIn(object):
-    
-    def __init__(self, doc):
-        self.__dict__.update(doc)
 
     @classmethod 
     def connect(klass):
