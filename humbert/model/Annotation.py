@@ -8,15 +8,20 @@ from mongoMixIn import mongoMixIn
 class Annotation(mongoMixIn):
     DB_NAME = 'core_humbert_data'
     COLLECTION = 'Annotations'
+
+    """
+    Annotation:
+    { 
+    author,
+    user_id,
+    url,
+    text
+    }
+    """
     
     @classmethod
     def add_annotation(klass, doc):
         return klass.mdbc().insert(doc)
-
-    @classmethod
-    def find_by_src(klass, src):
-        spec = {'src':src }
-        return klass.mdbc().find(spec)
 
     @classmethod
     def find_by_author(klass, author):
@@ -25,7 +30,7 @@ class Annotation(mongoMixIn):
 
     @classmethod
     def find_by_user_id(klass, user_id):
-        spec = {'user_id':ObjectId(user_id)}
+        spec = {'user_id':user_id}
         return klass.mdbc().find(spec)
 
     @classmethod
@@ -33,6 +38,9 @@ class Annotation(mongoMixIn):
         spec = {'url':url}
         return klass.mdbc().find(spec)
 
-
+    @classmethod 
+    def get_stored_text_by_url(klass, url):
+        annotation = klass.mdbc().find_one({ 'url': url})
+        return annotation.get('text')
 
 #Maybe we should use another model for each text

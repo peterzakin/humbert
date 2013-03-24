@@ -1,9 +1,19 @@
-username is {{username}}
+{% include 'includes/head.html' %}
+<body>
 
-annotation id is {{annotation_id}}
+<div class="container">
+{% include 'includes/header.html' %}
+
+
 
 <div id="annotation">
 {% autoescape off %}
-annotation text is: {{ text }} 
+{{ text }} 
 {% endautoescape %}
 </div>
+
+</div>
+
+<!-- closes body and html tags -->
+{% include 'footer.html' %}
+

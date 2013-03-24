@@ -41,9 +41,12 @@ class Profile(User):
         logging.info(user_dict)
         return user_dict
 
+    """
+    Takes the auth user and returns a Profile object.
+    """
     @classmethod
     def get_profile(klass, user):
-        return Profile.objects.get(id=user_id)
+        return Profile.objects.get(id=user.id)
     
     @classmethod
     def init_session(klass, request):
@@ -54,10 +57,6 @@ class Profile(User):
                 request.session.update(fb_info)
             except Errors.fb_error:
                 redirect('/logout')
-
-    @classmethod
-    def get_profile(klass, user):
-        return klass.objects.get(id=user.id)
 
     @classmethod
     def handle_fb_errors(klass, error):
@@ -75,5 +74,3 @@ class Profile(User):
             self.save()
 
         return access_token, expiry_date
-        
-

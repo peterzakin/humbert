@@ -16,7 +16,7 @@ urlpatterns = patterns('',
 
       url(r'^(?P<username>(\w)+)/?$', render_profile),
       url(r'^(?P<username>(\w)+)/(?P<annotation_id>(\d)+)/?$', render_annotation),
-      url(r'^channel/?$', channel),
+
 
 
 

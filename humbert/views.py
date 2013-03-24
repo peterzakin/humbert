@@ -9,6 +9,7 @@ from django.template import RequestContext
 from model.User import User, Profile
 from django.http import HttpResponse
 from django.contrib.auth import logout
+from model.Annotation import Annotation
 
 
 def home(request):
@@ -16,26 +17,16 @@ def home(request):
     if request.user.is_authenticated():
         Profile.init_session(request)
         url = "http://www.paulgraham.com/start.html"
-        c['text'] = DiffBot.get_article(url)
+        #c['text'] = DiffBot.get_article(url)
         c['bio'] = request.session['bio']
         return render_to_response('logged_in_home.html', c)
 
     return render_to_response('landing.html', c)
 
 
-def post_page(request, post_id):
-    c = {}
-    c['post_id'] = post_id
-    return render_to_response('post_page.html', c)
-
-def channel(request):
-    c = {}
-    return render_to_response('channel.html', c)
-
 def render_profile(request, *args, **kwargs):
     username = kwargs.get('username')
     c = {}
-    c['peter'] = request.session.get('peter')
     profile_user = User.find_by_username(username)
     if profile_user is not None:
 
@@ -50,23 +41,18 @@ def render_annotation(request, *args, **kwargs):
     annotation_id = kwargs.get('annotation_id')
     c = {}
     c['username'] = username
-    c['text'] = Annotation.find_by_id(ObjectId(annotation_id))
-    return render_to_response('annotation.html', c)
-
-def add_annotation(request):
-    #use post
-    url = request.POST.get('url')
     
-    #has the url already been seen--> cursor
-    annotations = Annotation.find_by_url(url)
-    if annotations.count() == 0:
-        c['text'] = Diffbot.get_article(url)
+    url = "http://www.paulgraham.com/start.html"
+    c['text'] = DiffBot.get_article(url)
+
+    return render_to_response('annotation.html', c)
 
 
 def logout_view(request):
     # /logout
     logout(request)
     return redirect('/?state=logged_out')
+
 
 #AJAX FUNCTIONS
 def fb_login_with_token_and_id(request):
@@ -76,7 +62,6 @@ def fb_login_with_token_and_id(request):
     user_set = Profile.objects.filter(fb_id=fb_id)
 
     # could probably change this to access token; i.e lookup by access token and not id
-
     if len(user_set) == 0:
         # create new user
         user = Profile.create_new_fb_user(fb_id, access_token)
@@ -94,4 +79,3 @@ def fb_login_with_token_and_id(request):
 
     print user.__dict__
     return HttpResponse('Hey client side, we just logged u in. -serverside out')
-
