@@ -49,7 +49,6 @@ def render_annotation(request, *args, **kwargs):
     if annotations.count() <= 0:
         #create new annotation
         try:
-            import pdb; pdb.set_trace()
             text = DiffBot.get_article(url)
             doc = {
                 'url':url,
