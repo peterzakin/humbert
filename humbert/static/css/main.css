@@ -136,9 +136,6 @@ button#compose{
 .title{
     font-size:16px;
     color:black;
-    font-weight:600;
-    margin:2px 10px;
-    font-family:avenir;
 }
 
 .summary{
@@ -149,4 +146,15 @@ button#compose{
 }
 
 
+.note {
+    font-family:georgia, Times;
+    font-size:12px;
+    color: #504375;
+    margin-bottom:30px;
+}
+
+#notes{
+    margin-top:40px;
+
+}
 

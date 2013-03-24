@@ -45,8 +45,8 @@ def render_annotation(request, *args, **kwargs):
     url = "http://www.paulgraham.com/start.html"
 
     #create annotation if the text doesn't exist
-    annotation = Annotation.find_by_url(url)
-    if annotation is None:
+    annotations = Annotation.find_by_url(url)
+    if annotations.count() <= 0:
         #create new annotation
         try:
             import pdb; pdb.set_trace()
@@ -60,8 +60,8 @@ def render_annotation(request, *args, **kwargs):
         except:
             raise Exception('oh shit diffbot')
     else:
-        #annotation exists
-        c['text'] = annotation.text
+        #1 or more annotations exist
+        c['text'] = annotations[0].get('text')
 
     return render_to_response('annotation.html', c)
 
