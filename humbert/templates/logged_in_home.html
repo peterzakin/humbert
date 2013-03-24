@@ -1,0 +1,57 @@
+{% include 'includes/head.html' %}
+<body>
+
+<div class="container">
+{% include 'includes/header.html' %}
+
+  <aside>
+<h2>POPULAR NOW</h2>
+<div class="item">
+  <em>How to Start a Startup</em> by <b>Paul Graham</b>
+</div>
+
+<div class="item">
+  <em>This is Water</em> by <b>David Foster Wallace</b>
+</div>
+
+<div class="item">
+  <em>"Social Software and the Politics of Groups"</em> by <b>Clay Shirky</b>
+</div>
+
+  </aside>
+  <section id="create" class="right">
+  <h2>Copy and paste text below or provide a url to start annotating</h2>
+
+  <ul id="input_options">
+    <li id="url">
+      URL
+    </li>
+
+      <li class="selected" id="text">
+      Text
+    </li>
+
+
+  </ul>
+
+  <div class="relative">
+    <form id="create_annotation">
+      <input class="input" type="text" placeholder="http://www.paulgraham.com/start" />
+      <textarea class="input">
+    Copy the text that you'd like to annotate here and click create to get started when you're ready    
+      </textarea>
+      <button id="get_started" class="right">
+        Get Started
+      </button>
+    </form>
+  </div>
+  </section> <!--end of main section -->
+</div>
+<!--
+<div id="top_right">
+<a href="/logout">Logout</a>
+</div>
+-->
+
+<!-- closes body and html tags -->
+{% include 'footer.html' %}
