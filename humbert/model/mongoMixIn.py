@@ -8,6 +8,8 @@ from bson.objectid import ObjectId
 
 class mongoMixIn(object):
 
+    DB_NAME = "heroku_app10941623"
+ 
     @classmethod 
     def connect(klass):
         if constants.ENVIRONMENT == 'test':

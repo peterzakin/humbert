@@ -6,7 +6,6 @@ from pymongo import ASCENDING, DESCENDING
 from mongoMixIn import mongoMixIn
 
 class Annotation(mongoMixIn):
-    DB_NAME = 'core_humbert_data'
     COLLECTION = 'Annotations'
 
     """
