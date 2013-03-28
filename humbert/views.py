@@ -10,14 +10,13 @@ from model.User import User, Profile
 from django.http import HttpResponse
 from django.contrib.auth import logout
 from model.Annotation import Annotation
+from model.Text import Text
 
 
 def home(request):
     c = RequestContext(request)
     if request.user.is_authenticated():
         Profile.init_session(request)
-        url = "http://www.paulgraham.com/start.html"
-        #c['text'] = DiffBot.get_article(url)
         c['bio'] = request.session['bio']
         return render_to_response('logged_in_home.html', c)
 
@@ -38,7 +37,7 @@ def render_profile(request, *args, **kwargs):
 
 def render_annotation(request, *args, **kwargs):
     username = kwargs.get('username')
-    annotation_id = kwargs.get('annotation_id')
+
     c = {}
     c['username'] = username
     
@@ -63,6 +62,8 @@ def render_annotation(request, *args, **kwargs):
         c['text'] = annotations[0].get('text')
 
     return render_to_response('annotation.html', c)
+
+
 
 def logout_view(request):
     # /logout
@@ -95,3 +96,24 @@ def fb_login_with_token_and_id(request):
 
     print user.__dict__
     return HttpResponse('Hey client side, we just logged u in. -serverside out')
+
+def create_annotation(request):
+   
+    #takes a post
+    if request.method != 'POST':
+        redirect('/')
+
+    c = RequestContext(request)
+
+    url = request.POST.get('url')
+    text = request.POST.get('text')
+
+    if url:
+        c['text'] = Text.get_or_create_text_by_url(url)
+    elif text:
+        c['text'] = text
+        Text.add_text({'text':text})
+    else:
+        redirect('/')
+    import pdb; pdb.set_trace()
+    return render_to_response('annotation.html', c)

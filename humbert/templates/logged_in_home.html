@@ -23,11 +23,11 @@
   <h2>Copy and paste text below or provide a url to start annotating</h2>
 
   <ul id="input_options">
-    <li id="url">
+    <li id="url" class="selected">
       URL
     </li>
 
-      <li class="selected" id="text">
+    <li id="text">
       Text
     </li>
 
@@ -35,12 +35,11 @@
   </ul>
 
   <div class="relative">
-    <form id="create_annotation">
-      <input class="input" type="text" placeholder="http://www.paulgraham.com/start" />
-      <textarea class="input">
-    Copy the text that you'd like to annotate here and click create to get started when you're ready    
-      </textarea>
-      <button id="get_started" class="right">
+    <form id="create_annotation_form" method="POST" action="/createp">
+      {% csrf_token %}
+      <input class="input" type="text" name="url" placeholder="http://www.paulgraham.com/start" />
+      <textarea class="input" name="text">Copy the text that you'd like to annotate here and click create to get started when you're ready</textarea>
+      <button id="create_annotation" class="right">
         Get Started
       </button>
     </form>
