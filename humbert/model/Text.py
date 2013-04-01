@@ -5,6 +5,8 @@ import constants
 from pymongo import ASCENDING, DESCENDING
 from mongoMixIn import mongoMixIn
 from lib.diffbotHelper import DiffBot
+import re
+
 class Text(mongoMixIn):
     COLLECTION = 'Texts'
 
@@ -45,7 +47,7 @@ class Text(mongoMixIn):
         text_info = DiffBot.get_article_info(url)
         if text_info:
             doc = {
-                'text': text_info.get('html'),
+                'text': Text.prepare_text(text_info.get('html')),
                 'url':text_info.get('url'),
                 'author':text_info.get('author'),
                 'title':text_info.get('title')
@@ -53,3 +55,20 @@ class Text(mongoMixIn):
             klass.add_text(doc)
             text_info = doc
         return text_info
+
+    @classmethod
+    def prepare_text(klass, html):
+        pattern ="(?<=>)(?!<).*?(?=.?<)[^<>]?"
+        return re.sub(pattern, repl, html, flags=re.DOTALL)
+
+count = 0    
+def repl(matchobject):
+    text = matchobject.group(0)
+    return re.sub("([^\s]*?) | \s+", subrepl, text)
+
+def subrepl(matchobject):
+    match = matchobject.group(0)
+    global count
+    output = "<span id=%s>%s</span>" % (count, match)
+    count = count + 1
+    return output
