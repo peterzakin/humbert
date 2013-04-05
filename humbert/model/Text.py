@@ -69,6 +69,6 @@ def repl(matchobject):
 def subrepl(matchobject):
     match = matchobject.group(0)
     global count
-    output = "<span id=%s>%s</span>" % (count, match)
+    output = "<span class='text_span' id=%s>%s</span>" % (count, match)
     count = count + 1
     return output

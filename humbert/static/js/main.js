@@ -96,8 +96,6 @@ $(document).ready(function(){
 
 
 
-
-
     var timeout;
     var last_span = false;
     var HIGHLIGHT_COLOR = 'red';
@@ -148,8 +146,6 @@ $(document).ready(function(){
     }
 
     $('#annotation').bind('mousedown', function(e){
-        
-
         e.preventDefault();
         clean_up();
         
@@ -175,10 +171,12 @@ $(document).ready(function(){
         console.log('mouseup');
         clearInterval(timeout);
         $('span').unbind();
-
+        return false;
     });
 
-
+    $(document).mousedown(function(e){
+        e.preventDefault();
+    });
 
 
 /*    $('#create_annotation').click(function(){
@@ -189,6 +187,7 @@ $(document).ready(function(){
 
 
 });
+
 
 
 
