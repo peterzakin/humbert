@@ -99,19 +99,25 @@ $(document).ready(function(){
 
 
     var timeout;
-    var last_span = 0;
+    var last_span = false;
     var HIGHLIGHT_COLOR = 'red';
 
 
     //sets a new last_span and percolates the highlight accordingly
     expand_highlight = function(new_span){
+        if (last_span == false){
+            last_span = parseInt(new_span.attr('id'));
+            return;
+        }
+
+
+
         new_last_span = parseInt(new_span.attr('id'));
         console.log('new last_span' + new_span.attr('id'));
         
 
         //needs to highlight all of the spans between the old last span and the newest last span
         for (var id=parseInt(last_span); id <= new_last_span; id++){
-            console.log("its colored!");
             $('#' + id).addClass('highlighted');
         }
         
@@ -120,11 +126,15 @@ $(document).ready(function(){
     };
 
     minimize_highlight = function(new_span){
+        if (last_span == false){
+            last_span = parseInt(new_span.attr('id'));
+            return;
+        }
+
         new_last_span = parseInt(new_span.attr('id'));
         
         //iterate through
         for (var id=new_last_span; id <= parseInt(last_span); id++){
-            console.log("its colored!");
             $('#' + id).removeClass('highlighted');
         }
         last_span = new_last_span;
@@ -133,10 +143,13 @@ $(document).ready(function(){
 
     //makes sure that any other annotations are cleared away before starting a new one
     clean_up = function(){
-        $('span.highlight').removeClass('highlight');
+        $('span.highlighted').removeClass('highlighted');
+        last_span = false;
     }
 
-    $('#annotation').mousedown(function(e){
+    $('#annotation').bind('mousedown', function(e){
+        
+
         e.preventDefault();
         clean_up();
         
@@ -152,20 +165,19 @@ $(document).ready(function(){
                 }
             });
 
-        }, 50)
+            
+        }, 50);
 
-    }).mousemove(function(e){
-        e.preventDefault();
     });
 
-    $(document).mouseup(function(e){
+    $(document).bind('mouseup', function(e){
         e.preventDefault();
         console.log('mouseup');
         clearInterval(timeout);
         $('span').unbind();
-        return false;
-        
+
     });
+
 
 
 
@@ -177,6 +189,8 @@ $(document).ready(function(){
 
 
 });
+
+
 
 
 
