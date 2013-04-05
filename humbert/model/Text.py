@@ -64,7 +64,9 @@ class Text(mongoMixIn):
 count = 0    
 def repl(matchobject):
     text = matchobject.group(0)
-    return re.sub("([^\s]*?) | \s+", subrepl, text)
+#    return re.sub("([^\s]*?) | \s+", subrepl, text)
+    #I am somewhat confident that this is the right reg ex
+    return re.sub("([^\s]*)", subrepl, text)
 
 def subrepl(matchobject):
     match = matchobject.group(0)
