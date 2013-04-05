@@ -108,22 +108,21 @@ $(document).ready(function(){
             return;
         }
 
-
+        console.log(new_span);
 
         new_last_span = parseInt(new_span.attr('id'));
-        console.log('new last_span' + new_span.attr('id'));
-        
-
+        //console.log('new last_span' + new_span.attr('id'));
+       
         //needs to highlight all of the spans between the old last span and the newest last span
         for (var id=parseInt(last_span); id <= new_last_span; id++){
             $('#' + id).addClass('highlighted');
         }
         
-        console.log('new last span is' + new_last_span);
         last_span = new_last_span;
     };
 
     minimize_highlight = function(new_span){
+        console.log(new_span);
         if (last_span == false){
             last_span = parseInt(new_span.attr('id'));
             return;
@@ -132,6 +131,7 @@ $(document).ready(function(){
         new_last_span = parseInt(new_span.attr('id'));
         
         //iterate through
+
         for (var id=new_last_span; id <= parseInt(last_span); id++){
             $('#' + id).removeClass('highlighted');
         }
@@ -147,12 +147,15 @@ $(document).ready(function(){
 
     $('#annotation').bind('mousedown', function(e){
         e.preventDefault();
+
         clean_up();
         
         timeout = setInterval(function(){ 
-            $('span').hover(function(){
+            $('span').hover(function(e){
+                e.stopPropagation();
                 $(this).addClass('highlighted');
                 if (parseInt($(this).attr('id')) > last_span){
+                    console.log($(this).attr('id'));
                     expand_highlight($(this));
                 }
 
@@ -162,7 +165,8 @@ $(document).ready(function(){
             });
 
             
-        }, 50);
+        }, 100);
+        
 
     });
 
@@ -187,6 +191,7 @@ $(document).ready(function(){
 
 
 });
+
 
 
 
