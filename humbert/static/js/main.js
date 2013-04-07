@@ -88,18 +88,12 @@ $(document).ready(function(){
     }
 //        console.log(t); 
         alert(t);
-  
-  
-        
 
     }); */
-
-
 
     var timeout;
     var last_span = false;
     var HIGHLIGHT_COLOR = 'red';
-
 
     //sets a new last_span and percolates the highlight accordingly
     expand_highlight = function(new_span){
@@ -111,8 +105,7 @@ $(document).ready(function(){
         console.log(new_span);
 
         new_last_span = parseInt(new_span.attr('id'));
-        //console.log('new last_span' + new_span.attr('id'));
-       
+        //console.log('new last_span' + new_span.attr('id'));       
         //needs to highlight all of the spans between the old last span and the newest last span
         for (var id=parseInt(last_span); id <= new_last_span; id++){
             $('#' + id).addClass('highlighted');
@@ -131,7 +124,6 @@ $(document).ready(function(){
         new_last_span = parseInt(new_span.attr('id'));
         
         //iterate through
-
         for (var id=new_last_span; id <= parseInt(last_span); id++){
             $('#' + id).removeClass('highlighted');
         }
@@ -165,7 +157,7 @@ $(document).ready(function(){
             });
 
             
-        }, 100);
+        }, 25);
         
 
     });
@@ -191,6 +183,7 @@ $(document).ready(function(){
 
 
 });
+
 
 
 
