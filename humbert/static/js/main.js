@@ -96,12 +96,9 @@ $(document).ready(function(){
     var start = false;
     var HIGHLIGHT_COLOR = 'red';
     var min_span;
-    //sets a new last_span and percolates the highlight accordingly
+    
+    //expands in positive direction or minimizes in negative direction
     expand_highlight = function(current_id){
-        if (last_span == false){
-            last_span = current_id;
-            return;
-        }
 
         percolate_highlight(parseInt(last_span), current_id);
 
@@ -119,13 +116,8 @@ $(document).ready(function(){
         min_span = Math.min(min_span, last_span);
     };
 
+    //minimizes in positive direction or expands in negative direction
     minimize_highlight = function(current_id){
-        if (last_span == false){
-            last_span = current_id;
-            return;
-        }
-
-        //iterate through
         disintegrate_highlight(current_id, last_span);
         
         if (start > current_id){
@@ -136,6 +128,8 @@ $(document).ready(function(){
         min_span = Math.min(min_span, last_span);
     }
 
+
+////////////////HIGHLIGHT ADDITION/SUBTRACTION
     percolate_highlight = function(min, max){
         //This function will create a highlight between to spans.          
         for (var id=parseInt(min); id <= parseInt(max); id++){
@@ -148,13 +142,14 @@ $(document).ready(function(){
             $('#' + id).removeClass('highlighted');
         }
     }
-
+//////////////////////////////////////////////
 
     //makes sure that any other annotations are cleared away before starting a new one
     clean_up = function(){
         $('span.highlighted').removeClass('highlighted');
         last_span = false;
         start = false;
+        min_span = false;
     }
 
     $('#annotation').bind('mousedown', function(e){
@@ -171,7 +166,9 @@ $(document).ready(function(){
                 if (start==false){
                     start = current_id;
                     min_span = start;
+                    last_span = start;
                 }
+
 
                 e.stopPropagation();
                 $(this).addClass('highlighted');
