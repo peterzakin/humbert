@@ -97,30 +97,29 @@ $(document).ready(function(){
     var HIGHLIGHT_COLOR = 'red';
 
     //sets a new last_span and percolates the highlight accordingly
-    expand_highlight = function(new_span){
+    expand_highlight = function(current_id){
         if (last_span == false){
-            last_span = parseInt(new_span.attr('id'));
+            last_span = current_id;
             return;
         }
 
-        new_last_span = parseInt(new_span.attr('id'));
+        new_last_span = current_id;
         percolate_highlight(parseInt(last_span), new_last_span);
         last_span = new_last_span;
     };
 
-    minimize_highlight = function(new_span){
+    minimize_highlight = function(current_id){
         if (last_span == false){
-            last_span = parseInt(new_span.attr('id'));
+            last_span = current_id;
             return;
         }
 
-        new_last_span = parseInt(new_span.attr('id'));
+        new_last_span = current_id;
         
         //iterate through
-        for (var id=new_last_span; id <= parseInt(last_span); id++){
+        for (var id=new_last_span; id <= last_span; id++){
             $('#' + id).removeClass('highlighted');
         }
-
         
         if (start > new_last_span){
             percolate_highlight(new_last_span, start);
@@ -153,25 +152,24 @@ $(document).ready(function(){
 
         timeout = setInterval(function(){ 
             $('span').hover(function(e){
+                current_id = parseInt($(this).attr('id'));
+
                 if (start==false){
-                    start = $(this).attr('id');
+                    start = current_id;
                 }
 
                 e.stopPropagation();
                 $(this).addClass('highlighted');
-                if (parseInt($(this).attr('id')) > last_span){
-                    console.log($(this).attr('id'));
-                    expand_highlight($(this));
+                if (current_id > last_span){
+                    expand_highlight(current_id);
                 }
 
-                if(parseInt($(this).attr('id')) < last_span){
-                    minimize_highlight($(this));
+                if(current_id < last_span){
+                    minimize_highlight(current_id);
                 }
             });
-
             
         }, 25);
-        
 
     });
 
@@ -196,6 +194,7 @@ $(document).ready(function(){
 
 
 });
+
 
 
 
