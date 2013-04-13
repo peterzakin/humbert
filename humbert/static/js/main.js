@@ -95,16 +95,28 @@ $(document).ready(function(){
     var last_span = false;
     var start = false;
     var HIGHLIGHT_COLOR = 'red';
-
+    var min_span;
     //sets a new last_span and percolates the highlight accordingly
     expand_highlight = function(current_id){
         if (last_span == false){
             last_span = current_id;
             return;
         }
-        
+
         percolate_highlight(parseInt(last_span), current_id);
+
+        //continuous disintegration
+        if(current_id >= last_span && current_id < start){
+            disintegrate_highlight(min_span, current_id -1);
+        }
+
+        //discontinuous disintegration for cases where we have jumps past the start point.
+        if(current_id > start){
+            disintegrate_highlight(min_span, start -1);
+        }
+        
         last_span = current_id;
+        min_span = Math.min(min_span, last_span);
     };
 
     minimize_highlight = function(current_id){
@@ -121,6 +133,7 @@ $(document).ready(function(){
         }
 
         last_span = current_id;
+        min_span = Math.min(min_span, last_span);
     }
 
     percolate_highlight = function(min, max){
@@ -154,13 +167,15 @@ $(document).ready(function(){
         timeout = setInterval(function(){ 
             $('span').hover(function(e){
                 current_id = parseInt($(this).attr('id'));
-
+                
                 if (start==false){
                     start = current_id;
+                    min_span = start;
                 }
 
                 e.stopPropagation();
                 $(this).addClass('highlighted');
+
                 if (current_id > last_span){
                     expand_highlight(current_id);
                 }
@@ -195,6 +210,7 @@ $(document).ready(function(){
 
 
 });
+
 
 
 
