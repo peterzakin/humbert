@@ -188,9 +188,15 @@ $(document).ready(function(){
 
     $(document).bind('mouseup', function(e){
         e.preventDefault();
-        console.log('mouseup');
         clearInterval(timeout);
         $('span').unbind();
+        return false;
+    });
+
+
+    $('aside').mouseup(function(){
+        $('#annotation').trigger('mouseup');
+        clearInterval(timeout);
         return false;
     });
 
