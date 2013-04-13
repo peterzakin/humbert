@@ -102,10 +102,9 @@ $(document).ready(function(){
             last_span = current_id;
             return;
         }
-
-        new_last_span = current_id;
-        percolate_highlight(parseInt(last_span), new_last_span);
-        last_span = new_last_span;
+        
+        percolate_highlight(parseInt(last_span), current_id);
+        last_span = current_id;
     };
 
     minimize_highlight = function(current_id){
@@ -114,18 +113,16 @@ $(document).ready(function(){
             return;
         }
 
-        new_last_span = current_id;
-        
         //iterate through
-        for (var id=new_last_span; id <= last_span; id++){
+        for (var id=current_id; id <= last_span; id++){
             $('#' + id).removeClass('highlighted');
         }
         
-        if (start > new_last_span){
-            percolate_highlight(new_last_span, start);
+        if (start > current_id){
+            percolate_highlight(current_id, start);
         }
 
-        last_span = new_last_span;
+        last_span = current_id;
     }
 
     percolate_highlight = function(min, max){
@@ -194,6 +191,7 @@ $(document).ready(function(){
 
 
 });
+
 
 
 
