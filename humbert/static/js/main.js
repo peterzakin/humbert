@@ -93,6 +93,7 @@ $(document).ready(function(){
 
     var timeout;
     var last_span = false;
+    var start = false;
     var HIGHLIGHT_COLOR = 'red';
 
     //sets a new last_span and percolates the highlight accordingly
@@ -102,20 +103,12 @@ $(document).ready(function(){
             return;
         }
 
-        console.log(new_span);
-
         new_last_span = parseInt(new_span.attr('id'));
-        //console.log('new last_span' + new_span.attr('id'));       
-        //needs to highlight all of the spans between the old last span and the newest last span
-        for (var id=parseInt(last_span); id <= new_last_span; id++){
-            $('#' + id).addClass('highlighted');
-        }
-        
+        percolate_highlight(parseInt(last_span), new_last_span);
         last_span = new_last_span;
     };
 
     minimize_highlight = function(new_span){
-        console.log(new_span);
         if (last_span == false){
             last_span = parseInt(new_span.attr('id'));
             return;
@@ -127,7 +120,20 @@ $(document).ready(function(){
         for (var id=new_last_span; id <= parseInt(last_span); id++){
             $('#' + id).removeClass('highlighted');
         }
+
+        
+        if (start > new_last_span){
+            percolate_highlight(new_last_span, start);
+        }
+
         last_span = new_last_span;
+    }
+
+    percolate_highlight = function(min, max){
+        //This function will create a highlight between to spans.          
+        for (var id=parseInt(min); id <= parseInt(max); id++){
+            $('#' + id).addClass('highlighted');
+        }
     }
 
 
@@ -135,6 +141,7 @@ $(document).ready(function(){
     clean_up = function(){
         $('span.highlighted').removeClass('highlighted');
         last_span = false;
+        start = false;
     }
 
     $('#annotation').bind('mousedown', function(e){
@@ -142,8 +149,14 @@ $(document).ready(function(){
 
         clean_up();
         
+        console.log("start");
+
         timeout = setInterval(function(){ 
             $('span').hover(function(e){
+                if (start==false){
+                    start = $(this).attr('id');
+                }
+
                 e.stopPropagation();
                 $(this).addClass('highlighted');
                 if (parseInt($(this).attr('id')) > last_span){
@@ -183,6 +196,8 @@ $(document).ready(function(){
 
 
 });
+
+
 
 
 
