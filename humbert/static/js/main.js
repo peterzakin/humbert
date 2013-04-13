@@ -114,9 +114,7 @@ $(document).ready(function(){
         }
 
         //iterate through
-        for (var id=current_id; id <= last_span; id++){
-            $('#' + id).removeClass('highlighted');
-        }
+        disintegrate_highlight(current_id, last_span);
         
         if (start > current_id){
             percolate_highlight(current_id, start);
@@ -129,6 +127,12 @@ $(document).ready(function(){
         //This function will create a highlight between to spans.          
         for (var id=parseInt(min); id <= parseInt(max); id++){
             $('#' + id).addClass('highlighted');
+        }
+    }
+
+    disintegrate_highlight = function(min, max){
+        for (var id=min; id <=max; id++){
+            $('#' + id).removeClass('highlighted');
         }
     }
 
