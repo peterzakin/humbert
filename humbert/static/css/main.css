@@ -33,6 +33,13 @@ aside{
     float:right;
 }
 
+#annotation.active{
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    user-select: none;
+    -webkit-user-select:none;
+}
+
 #top_right{
 	position:fixed;
 	top:10px;
@@ -101,12 +108,66 @@ aside h2{
     margin-bottom:10px;
 }
 
+#compose_screen{
+    background:rgba(8, 4, 4, 0.88);
+    left:0;
+    top:0;
+    position:fixed;
+    display:none;
+    height:100%;
+    width:400px;
+}
+
+#compose_container{
+    margin:0 auto;
+    width:90%;
+    height:280px;
+    background:white;
+    margin-top:80px;
+    position:relative;
+}
+
+#highlighted_text{
+    margin-top:30px;
+    margin-left:auto;
+    margin-right:auto;
+    width:90%;
+    color:#f3f3f3;
+}
 
 button{
     text-align:center;
 }
 
-button#create_annotation{
+button#post_note{
+    left:0px;
+}
+
+button#discard{
+    right:0px;
+}
+
+#compose_screen .buttons{
+    position:absolute;
+    bottom:-30px;
+    width:100%;
+}
+
+#compose_screen button{
+    display:inline;
+    padding-top:10px;
+    padding-bottom:10px;
+    width:170px;
+    font-weight:600;
+    position:absolute;
+}
+
+button#discard{
+    background:#f3f3f3;
+    color:#424242;
+}
+
+button#create_annotation, button#annotate_button{
     padding-top:15px;
     padding-bottom:15px;
     width:200px;
@@ -168,11 +229,6 @@ button#compose{
 }
 
 .highlighted{
-    color:red;
+    color:#0854C7;
 }
-
-
-
-
-
 

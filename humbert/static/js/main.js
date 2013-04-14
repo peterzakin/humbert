@@ -1,7 +1,15 @@
 $(document).ready(function(){
+    start_highlighting = function(){
+        isHighlighting = true;
+        $("#annotate_button").css('display', 'none');
+    }
+
+    $('#annotate_button').click(function(){
+        start_highlighting();
+        $('#compose_screen').css('display', 'block');
+    });
 
     csrf_token = $('#csrf_token').val()
-
     $.ajaxSetup({ 
         beforeSend: function(xhr, settings) {
             function getCookie(name) {
@@ -27,8 +35,6 @@ $(document).ready(function(){
         } 
     });
 
-
-    console.log("mountaineer to base camp");
     $('.input').focus();
     
     //for selecting input types
@@ -72,9 +78,7 @@ $(document).ready(function(){
 
     }
 
-    $('aside').mouseup(function(e){
-        e.stopPropagation();
-    });
+    
 
 /*    $(document).mouseup(function(){
         
@@ -91,11 +95,33 @@ $(document).ready(function(){
 
     }); */
 
+    var highlighted_text='';
+
+    set_highlighted_text = function(){
+        text ='';
+        if(start < last_span){
+            for (var i = start; i <= last_span; i++){
+                text += $('#' + i).text() + ' ';
+            }
+            $('#highlighted_text').text(text);
+        }
+        
+        if(start > last_span){
+            for (var i = last_span; i <= start; i++){
+                text += $('#' + i).text() + ' ';
+            }
+            $('#highlighted_text').text(text);
+        }
+        
+    }
+
+
     var timeout;
     var last_span = false;
     var start = false;
-    var HIGHLIGHT_COLOR = 'red';
+    var HIGHLIGHT_COLOR = '#064780';
     var min_span;
+    var isHighlighting = false;
     
     //expands in positive direction or minimizes in negative direction
     expand_highlight = function(current_id){
@@ -153,12 +179,13 @@ $(document).ready(function(){
     }
 
     $('#annotation').bind('mousedown', function(e){
+        if(!isHighlighting){
+            return;
+        }
         e.preventDefault();
 
         clean_up();
         
-        console.log("start");
-
         timeout = setInterval(function(){ 
             $('span').hover(function(e){
                 current_id = parseInt($(this).attr('id'));
@@ -180,6 +207,8 @@ $(document).ready(function(){
                 if(current_id < last_span){
                     minimize_highlight(current_id);
                 }
+
+                set_highlighted_text();
             });
             
         }, 25);
@@ -195,22 +224,11 @@ $(document).ready(function(){
 
 
     $('aside').mouseup(function(){
+        //stop propagation
         $('#annotation').trigger('mouseup');
         clearInterval(timeout);
         return false;
     });
-
-    $(document).mousedown(function(e){
-        e.preventDefault();
-    });
-
-
-/*    $('#create_annotation').click(function(){
-        create_annotation();
-    });*/
-
-   //i think that getting selection is probably a bad idea after all. You might as well just use mousedown and keep a tally onthe spans.
-
 
 });
 
