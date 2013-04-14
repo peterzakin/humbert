@@ -1,12 +1,49 @@
 $(document).ready(function(){
+    
+    //starts highlighting mode
     start_highlighting = function(){
         isHighlighting = true;
-        $("#annotate_button").css('display', 'none');
+        $('html').addClass('isHighlighting');
+        $("aside").css('display', 'none');
+        $('#compose_screen').css('display', 'block');
     }
+
+    //ends highlighting mode
+    stop_highlighting = function(){
+        isHighlighting = false;
+        $('html').removeClass('isHighlighting');
+        $("aside").css('display', 'block');
+        $('#compose_screen').css('display', 'none');
+        clean_up();
+    }
+
+    //save comment
+    save_comment = function(){
+        comment = $('#post_note').val();
+        post_comment(start, last_span, comment);
+        stop_highlighting();
+    }
+
+    post_comment = function(begin, end, comment){
+        //ajax call to make the comment
+       
+        //display comment 
+        display_comment(begin, end, comment);
+    }
+
+    display_comment = function(begin, end, comment){
+        for(var i=begin; i<=end; i++){
+            $('#' + i).addClass('published_highlight');
+        }
+    }
+
 
     $('#annotate_button').click(function(){
         start_highlighting();
-        $('#compose_screen').css('display', 'block');
+    });
+
+    $('button#discard').click(function(){
+        stop_highlighting();
     });
 
     csrf_token = $('#csrf_token').val()
@@ -78,40 +115,34 @@ $(document).ready(function(){
 
     }
 
-    
-
-/*    $(document).mouseup(function(){
-        
-   var t = '';
-    if(window.getSelection){
-        t = window.getSelection().toString();
-    }else if(document.getSelection){
-        t = document.getSelection().text;
-    }else if(document.selection){
-        t = document.selection.createRange().text;
-    }
-//        console.log(t); 
-        alert(t);
-
-    }); */
-
     var highlighted_text='';
 
     set_highlighted_text = function(){
         text ='';
-        if(start < last_span){
+
+        if (start==false){
+            $('#highlighted_text').text(text);
+        }
+
+        else if(start < last_span){
             for (var i = start; i <= last_span; i++){
                 text += $('#' + i).text() + ' ';
             }
             $('#highlighted_text').text(text);
         }
         
-        if(start > last_span){
+        else if(start > last_span){
             for (var i = last_span; i <= start; i++){
                 text += $('#' + i).text() + ' ';
             }
             $('#highlighted_text').text(text);
         }
+        
+        else {
+            $('#highlighted_text').text($('#' + start).text());
+            
+        }
+
         
     }
 
@@ -176,6 +207,7 @@ $(document).ready(function(){
         last_span = false;
         start = false;
         min_span = false;
+        set_highlighted_text();
     }
 
     $('#annotation').bind('mousedown', function(e){
@@ -244,3 +276,20 @@ $(document).ready(function(){
 
 
 
+
+    
+
+/*    $(document).mouseup(function(){
+        
+   var t = '';
+    if(window.getSelection){
+        t = window.getSelection().toString();
+    }else if(document.getSelection){
+        t = document.getSelection().text;
+    }else if(document.selection){
+        t = document.selection.createRange().text;
+    }
+//        console.log(t); 
+        alert(t);
+
+    }); */

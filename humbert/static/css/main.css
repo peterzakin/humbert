@@ -33,7 +33,7 @@ aside{
     float:right;
 }
 
-#annotation.active{
+html.isHighlighting, #annotation.active{
     -moz-user-select: none;
     -khtml-user-select: none;
     user-select: none;
@@ -118,13 +118,24 @@ aside h2{
     width:400px;
 }
 
+#compose_screen textarea{
+    width:90%;
+    margin: 0 auto;
+    height:280px;
+    background:white;
+    margin-top:20px;
+    display:block;
+    padding:10px;
+    font-size:15px;
+}
+
 #compose_container{
     margin:0 auto;
     width:90%;
     height:280px;
     background:white;
-    margin-top:80px;
     position:relative;
+    margin-top:20px;
 }
 
 #highlighted_text{
@@ -133,6 +144,9 @@ aside h2{
     margin-right:auto;
     width:90%;
     color:#f3f3f3;
+    height:250px;
+    overflow:scroll;
+
 }
 
 button{
@@ -148,9 +162,10 @@ button#discard{
 }
 
 #compose_screen .buttons{
-    position:absolute;
-    bottom:-30px;
-    width:100%;
+    position:relative;
+    width:90%;
+    margin:0 auto;
+    margin-top:10px;
 }
 
 #compose_screen button{
@@ -232,3 +247,7 @@ button#compose{
     color:#0854C7;
 }
 
+.published_highlight{
+    color:red;
+    
+}
