@@ -2,6 +2,7 @@ $(document).ready(function(){
     
     //starts highlighting mode
     start_highlighting = function(){
+        alert('yooo');
         isHighlighting = true;
         $('html').addClass('isHighlighting');
         $("aside").css('display', 'none');
@@ -297,4 +298,5 @@ $(document).ready(function(){
         alert(t);
 
     }); */
+
 
