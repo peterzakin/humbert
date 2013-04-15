@@ -2,7 +2,6 @@ $(document).ready(function(){
     
     //starts highlighting mode
     start_highlighting = function(){
-        alert('yooo');
         isHighlighting = true;
         $('html').addClass('isHighlighting');
         $("aside").css('display', 'none');
@@ -230,7 +229,7 @@ $(document).ready(function(){
                     start = current_id;
                     min_span = start;
                     last_span = start;
-                    expand_highlight(current_id);
+          //          expand_highlight(current_id);
                 }
 
 
@@ -248,7 +247,7 @@ $(document).ready(function(){
                 set_highlighted_text();
             });
             
-        }, 25);
+        }, 1);
 
     });
 
