@@ -32,11 +32,14 @@ $(document).ready(function(){
     }
 
     display_comment = function(begin, end, comment){
+        //display published_highlight
         for(var i=begin; i<=end; i++){
             $('#' + i).addClass('published_highlight');
         }
-    }
 
+        //this will be like a priority queue in terms of location.
+        //we move it left of the start point and below every note (which should have a 10px bottom padding)   
+    }
 
     $('#annotate_button').click(function(){
         start_highlighting();
@@ -226,6 +229,7 @@ $(document).ready(function(){
                     start = current_id;
                     min_span = start;
                     last_span = start;
+                    expand_highlight(current_id);
                 }
 
 
@@ -293,3 +297,4 @@ $(document).ready(function(){
         alert(t);
 
     }); */
+
