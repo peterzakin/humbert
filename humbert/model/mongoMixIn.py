@@ -38,6 +38,7 @@ class mongoMixIn(object):
 
     @classmethod
     def update(klass, obj_id, doc):
+        obj_id = klass._idify(obj_id)
         if hasattr(klass, klass.COLLECTION, None):
             spec = { "_id": obj_id }
             return klass.mdbc().update(spec, doc, upsert=True, safe=True)
@@ -46,6 +47,7 @@ class mongoMixIn(object):
 
     @classmethod
     def find_by_id(klass, obj_id):
+        obj_id = klass._idify(obj_id)
         spec = { "_id":obj_id }
         return klass.mdbc().find_one(spec)
         
@@ -55,3 +57,9 @@ class mongoMixIn(object):
         doc = kwargs
         model_id = klass.mdbc().insert(doc)
         return model_id
+
+    @classmethod
+    def _idify(klass, oid):
+        if type(oid) == str:
+            oid = ObjectId(oid)
+        return oid

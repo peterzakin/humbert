@@ -1,4 +1,5 @@
 $(document).ready(function(){
+    var ANNOTATION_ID = $('#annotation_id').val();
     
     //starts highlighting mode
     start_highlighting = function(){
@@ -17,23 +18,36 @@ $(document).ready(function(){
         clean_up();
     }
 
+    $('#post_note').click(function(){
+        save_comment();
+    });
+
     //save comment
     save_comment = function(){
-        comment = $('#post_note').val();
+        comment = $('#annotation_comment').val();
+        console.log(comment);
+        //start and last span are globals 
         post_comment(start, last_span, comment);
         stop_highlighting();
     }
 
-    post_comment = function(begin, end, comment){
+    post_comment = function(start_span, end_span, comment){
         //ajax call to make the comment
-       
+        data = {
+            'comment': comment,
+            'annotation_id': ANNOTATION_ID,
+            'start_span': String(start_span),
+            'end_span': String(end_span)
+        };
+
+        $.post("/ajax/create_comment", data);
         //display comment 
-        display_comment(begin, end, comment);
+        display_comment(start_span, end_span, comment);
     }
 
-    display_comment = function(begin, end, comment){
+    display_comment = function(start_span, end_span, comment){
         //display published_highlight
-        for(var i=begin; i<=end; i++){
+        for(var i=start_span; i<=end_span; i++){
             $('#' + i).addClass('published_highlight');
         }
 
@@ -113,7 +127,8 @@ $(document).ready(function(){
         data = {
             'url':url,
             'text':text
-        };
+        }
+
         $.post("/ajax/create_annotation", data);
 
     }
@@ -297,5 +312,9 @@ $(document).ready(function(){
         alert(t);
 
     }); */
+
+
+
+
 
 

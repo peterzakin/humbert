@@ -34,7 +34,7 @@ class Annotation(mongoMixIn):
             'text_id':text_info.get('_id')
             }
 
-        klass._add_annotation(doc)
+        return klass._add_annotation(doc)
 
     @classmethod
     def add_comment_to_annotation(klass, annotation_id, comment):
