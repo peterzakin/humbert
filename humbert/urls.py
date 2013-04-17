@@ -14,12 +14,11 @@ urlpatterns = patterns('',
       url(r'^logout/?$', logout_view),
 #      url(r'^post/(?P<post_id>(\d)+)/?', post_page),
       url(r'^ajax/create_annotation/?$', create_annotation),
+      url(r'^ajax/create_comment/?$', create_comment),
       url(r'^ajax/fb_login/?$', fb_login_with_token_and_id),
 
       url(r'^(?P<username>(\w)+)/?$', render_profile),
       url(r'^(?P<username>(\w)+)/(?P<annotation_id>(\d)+)/?$', render_annotation),
-
-
 
 
     # Uncomment the admin/doc line below to enable admin documentation:

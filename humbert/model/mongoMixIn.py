@@ -5,7 +5,6 @@ import constants
 from pymongo import MongoClient, Connection
 from bson.objectid import ObjectId
 
-
 class mongoMixIn(object):
 
     DB_NAME = "heroku_app10941623"
@@ -49,10 +48,6 @@ class mongoMixIn(object):
     def find_by_id(klass, obj_id):
         spec = { "_id":obj_id }
         return klass.mdbc().find_one(spec)
-
-    #to be used when we want to save the instance to db
-    def save(self):
-        mongoMixIn.update(self.id, self.__dict__)
         
     #helpers
     @classmethod

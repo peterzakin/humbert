@@ -9,7 +9,7 @@ from django.template import RequestContext
 from model.User import User, Profile
 from django.http import HttpResponse
 from django.contrib.auth import logout
-from model.Annotation import Annotation
+from model.Annotation import Annotation, Comment
 from model.Text import Text
 
 
@@ -71,12 +71,12 @@ def logout_view(request):
 
 
 def create_annotation(request):
-   
     #takes a post
     if request.method != 'POST':
         redirect('/')
 
     c = RequestContext(request)
+    user_id = request.user.id
 
     url = request.POST.get('url')
     text = request.POST.get('text')
@@ -93,10 +93,27 @@ def create_annotation(request):
     else:
         redirect('/')
 
+    #here we have a text. let's create an annotation for the guy
+    Annotation.make_annotation(text_info, user_id)
     return render_to_response('annotation.html', c)
 
 
 #AJAX FUNCTIONS
+def create_comment(request):
+    import pdb; pdb.set_trace()
+    post_vars = request.POST
+    start_span = post_vars.get('start_span')
+    end_span = post_vars.get('end_span')
+    comment = post_vars.get('comment')
+    annotation_id = post_vars.get('annotation_id')
+
+    if start_span and end_span and comment and annotation_id:
+        comment = Comment(start_span, end_span, comment)
+        Annotation.add_comment_to_annotation(comment, annotation_id)
+    else:
+        raise Exception('something went wrong');
+
+
 def fb_login_with_token_and_id(request):
     #check to see if we have a user with this fb_id
     fb_id = request.POST.get('fb_id')

@@ -52,8 +52,8 @@ class Text(mongoMixIn):
                 'author':text_info.get('author'),
                 'title':text_info.get('title')
                 }
-            klass.add_text(doc)
-            text_info = doc
+            text_id = klass.add_text(doc)
+            text_info = klass.find_by_id(text_id)
         return text_info
 
     @classmethod
