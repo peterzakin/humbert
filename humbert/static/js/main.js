@@ -1,6 +1,7 @@
 $(document).ready(function(){
     var ANNOTATION_ID = $('#annotation_id').val();
-    
+
+    alert('yo');
     //starts highlighting mode
     start_highlighting = function(){
         isHighlighting = true;
@@ -312,6 +313,7 @@ $(document).ready(function(){
         alert(t);
 
     }); */
+
 
 
 
