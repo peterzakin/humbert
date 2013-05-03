@@ -138,7 +138,7 @@ $(document).ready(function(){
     set_highlighted_text = function(){
         text ='';
 
-        if (start==false){
+        if (start===false){
             $('#highlighted_text').text(text);
         }
 
@@ -240,7 +240,7 @@ $(document).ready(function(){
             $('span').hover(function(e){
                 current_id = parseInt($(this).attr('id'));
                 
-                if (start==false){
+                if (start===false){
                     start = current_id;
                     min_span = start;
                     last_span = start;
@@ -282,4 +282,5 @@ $(document).ready(function(){
     });
 
 });
+
 
