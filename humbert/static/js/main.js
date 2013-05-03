@@ -270,6 +270,11 @@ $(document).ready(function(){
 
 //make this recursive 
 
+FONT_SIZE = 12;
+
+//when we add things like profile pic etc... we'll want to add to this size.
+STANDARD_PADDING_BETWEEN_COMMENTS = 12;
+
 var comments = []
 Comment = function(offset, first_span, last_span, text){
     this.offset = offset;
@@ -294,21 +299,25 @@ position_comment_in_stack = function(comment){
         sibling = comments[p]
         console.log(sibling);
         
-        if(sibling.offset == comment.offset){
+        if(sibling.first_span == comment.first_span && sibling.last_span == comment.last_span){
             //they're the same
             continue;
         }
 
         else if(sibling.offset > comment.offset){
             diff = sibling.offset - comment.offset;
-            if(diff < 200){
-                sibling.offset = comment.offset + 300;
+            //do they collide?
+            if(diff < calculate_comment_height_from_length(comment.text.length)){
+//                sibling.offset = comment.offset + 300;
+                sibling.offset = comment.offset + calculate_comment_height_from_length(comment.text.length) + STANDARD_PADDING_BETWEEN_COMMENTS;
                 position_comment_in_stack(sibling);
             }
         } else {
+         //   diff = comment.offset - sibling.offset;
             diff = comment.offset - sibling.offset;
-            if(diff < 200){
-                comment.offset = sibling.offset + 300;
+            if(diff < calculate_comment_height_from_length(sibling.text.length)){
+                //comment.offset = sibling.offset + 300;
+                comment.offset = sibling.offset + calculate_comment_height_from_length(sibling.text.length) + STANDARD_PADDING_BETWEEN_COMMENTS;
                 position_comment_in_stack(comment);
             }
         }
@@ -318,6 +327,14 @@ position_comment_in_stack = function(comment){
     
 }
 
+calculate_comment_height_from_length = function(comment_length){
+    
+    //50 is how many characters can fit in horizontal space
+    comment_height = (Math.floor(comment_length/50) + 1) * FONT_SIZE;
+    
+    console.log('height is' + comment_height);
+    return comment_height;
+}
 
 
     post_comment = function(start_span, end_span, comment){
@@ -356,4 +373,5 @@ display_comments = function(){
         $('aside').append(html);
     }
 }
+
 
