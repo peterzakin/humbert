@@ -22,39 +22,6 @@ $(document).ready(function(){
         save_comment();
     });
 
-    //save comment
-    save_comment = function(){
-        comment = $('#annotation_comment').val();
-        console.log(comment);
-        //start and last span are globals 
-        post_comment(start, last_span, comment);
-        stop_highlighting();
-    }
-
-    post_comment = function(start_span, end_span, comment){
-        //ajax call to make the comment
-        data = {
-            'comment': comment,
-            'annotation_id': ANNOTATION_ID,
-            'start_span': String(start_span),
-            'end_span': String(end_span)
-        };
-
-        $.post("/ajax/create_comment", data);
-        //display comment 
-        display_published_higlight(start_span, end_span, comment);
-    }
-
-    display_published_higlight = function(start_span, end_span, comment){
-        //display published_highlight
-        for(var i=start_span; i<=end_span; i++){
-            $('#' + i).addClass('published_highlight');
-        }
-
-        //this will be like a priority queue in terms of location.
-        //we move it left of the start point and below every note (which should have a 10px bottom padding)   
-    }
-
     $('#annotate_button').click(function(){
         start_highlighting();
     });
@@ -281,6 +248,15 @@ $(document).ready(function(){
         return false;
     });
 
+        //save comment
+    save_comment = function(){
+        comment = $('#annotation_comment').val();
+        console.log(comment);
+        //start and last span are globals 
+        post_comment(start, last_span, comment);
+        stop_highlighting();
+    }
+    
 });
 
 
@@ -303,15 +279,21 @@ Comment = function(offset, first_span, last_span, text){
 }
 
 add_comment = function(offset, first_span, last_span, text){
-    comment = Comment(offset, first_span, last_span, text);
+    comment = new Comment(offset, first_span, last_span, text);
     //position comment in stack based on its offset
     position_comment_in_stack(comment);
+    $('.comment').remove();
     comments.push(comment);
+    display_comments();
 }
 
 //sorts comment in stack
 position_comment_in_stack = function(comment){
-    for(sibling in comments){
+    console.log(comment);
+    for(var p=0; p < comments.length; p++){
+        sibling = comments[p]
+        console.log(sibling);
+        
         if(sibling.offset == comment.offset){
             //they're the same
             continue;
@@ -332,17 +314,46 @@ position_comment_in_stack = function(comment){
         }
 
     }
+
+    
 }
+
+
+
+    post_comment = function(start_span, end_span, comment){
+        //ajax call to make the comment
+        data = {
+            'comment': comment,
+         //   'annotation_id': ANNOTATION_ID,
+            'start_span': String(start_span),
+            'end_span': String(end_span)
+        };
+
+        $.post("/ajax/create_comment", data);
+        //display comment 
+                display_published_higlight(start_span, end_span, comment);
+        add_comment($("#" + start_span).offset().top, start_span, end_span, comment);
+    }
+
+    display_published_higlight = function(start_span, end_span, comment){
+        //display published_highlight
+        for(var i=start_span; i<=end_span; i++){
+            $('#' + i).addClass('published_highlight');
+        }
+
+     }
+
 
 
 //DISPLAY COMMENTS
 display_comments = function(){
     //WHAT SHOULD WE DO ABOUT COMMENTS THAT ALREADY EXIST.
-    //IF THERES BEEN A CHANGE, THEN WE NEED TO REMOVE THE OLD ONES AND REFRESH
-    
+    //IF THERES BEEN A CHANGE, THEN WE NEED TO REMOVE THE OLD ONES AND REFRESH    
 
-    for(comment in comments){
-        html = "<div class='comment' style='top:" + comment.offset "'>" + comment.text + " </div>";
+    for(var j=0; j< comments.length; j++){
+        comment = comments[j];
+        html = "<div class='comment' style='top:" + comment.offset + "px'>" + comment.text + " </div>";
         $('aside').append(html);
     }
 }
+

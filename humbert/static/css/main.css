@@ -24,6 +24,11 @@ aside{
     margin-right:20px;
     float:left;
     font-size:14px;
+    position:relative;
+}
+
+.comment{
+    position:absolute;
 }
 
 #annotation{
@@ -260,4 +265,5 @@ button#compose{
     color:red;
     
 }
+
 
