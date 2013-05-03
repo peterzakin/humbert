@@ -33,6 +33,15 @@ aside{
     float:right;
 }
 
+#annotation img{
+    display:block;
+    margin:0 auto;
+}
+
+#main_annotation_content{
+    width:600px;
+}
+
 html.isHighlighting, #annotation.active{
     -moz-user-select: none;
     -khtml-user-select: none;
@@ -251,3 +260,4 @@ button#compose{
     color:red;
     
 }
+

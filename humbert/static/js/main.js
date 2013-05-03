@@ -42,10 +42,10 @@ $(document).ready(function(){
 
         $.post("/ajax/create_comment", data);
         //display comment 
-        display_comment(start_span, end_span, comment);
+        display_published_higlight(start_span, end_span, comment);
     }
 
-    display_comment = function(start_span, end_span, comment){
+    display_published_higlight = function(start_span, end_span, comment){
         //display published_highlight
         for(var i=start_span; i<=end_span; i++){
             $('#' + i).addClass('published_highlight');
@@ -284,3 +284,65 @@ $(document).ready(function(){
 });
 
 
+//displays comments in aside.
+
+//get offset of their starting span.
+//position them absolutely with that offset.
+//when adding a new comment, check to see if it would collide with an old one
+//if it collides, push the earlier one on top, to where its offset determines it hsould be
+//push the later afterwards (earlier span + comment height + padding)
+
+//make this recursive 
+
+var comments = []
+Comment = function(offset, first_span, last_span, text){
+    this.offset = offset;
+    this.first_span = first_span;
+    this.last_span = last_span;
+    this.text = text;
+}
+
+add_comment = function(offset, first_span, last_span, text){
+    comment = Comment(offset, first_span, last_span, text);
+    //position comment in stack based on its offset
+    position_comment_in_stack(comment);
+    comments.push(comment);
+}
+
+//sorts comment in stack
+position_comment_in_stack = function(comment){
+    for(sibling in comments){
+        if(sibling.offset == comment.offset){
+            //they're the same
+            continue;
+        }
+
+        else if(sibling.offset > comment.offset){
+            diff = sibling.offset - comment.offset;
+            if(diff < 200){
+                sibling.offset = comment.offset + 300;
+                position_comment_in_stack(sibling);
+            }
+        } else {
+            diff = comment.offset - sibling.offset;
+            if(diff < 200){
+                comment.offset = sibling.offset + 300;
+                position_comment_in_stack(comment);
+            }
+        }
+
+    }
+}
+
+
+//DISPLAY COMMENTS
+display_comments = function(){
+    //WHAT SHOULD WE DO ABOUT COMMENTS THAT ALREADY EXIST.
+    //IF THERES BEEN A CHANGE, THEN WE NEED TO REMOVE THE OLD ONES AND REFRESH
+    
+
+    for(comment in comments){
+        html = "<div class='comment' style='top:" + comment.offset "'>" + comment.text + " </div>";
+        $('aside').append(html);
+    }
+}
