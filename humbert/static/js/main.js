@@ -1,7 +1,6 @@
 $(document).ready(function(){
     var ANNOTATION_ID = $('#annotation_id').val();
 
-    alert('yo');
     //starts highlighting mode
     start_highlighting = function(){
         isHighlighting = true;
@@ -283,40 +282,4 @@ $(document).ready(function(){
     });
 
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
-/*    $(document).mouseup(function(){
-        
-   var t = '';
-    if(window.getSelection){
-        t = window.getSelection().toString();
-    }else if(document.getSelection){
-        t = document.getSelection().text;
-    }else if(document.selection){
-        t = document.selection.createRange().text;
-    }
-//        console.log(t); 
-        alert(t);
-
-    }); */
-
-
-
-
-
-
 
