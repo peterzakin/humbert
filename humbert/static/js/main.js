@@ -19,6 +19,9 @@ $(document).ready(function(){
     }
 
     $('#post_note').click(function(){
+        if(!$.trim($('#annotation_comment').val())){
+            return;
+        };
         save_comment();
     });
 
@@ -400,6 +403,7 @@ display_comments = function(){
         $('aside').append(html);
     }
 }
+
 
 
 

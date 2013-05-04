@@ -30,6 +30,7 @@ aside{
 #toolbar{
     margin-bottom:40px;
     margin-top:20px;
+    float:right;
 }
 
 .comment{
@@ -162,7 +163,7 @@ aside h2{
 #compose_screen textarea{
     width:90%;
     margin: 0 auto;
-    height:280px;
+    height:340px;
     background:white;
     margin-top:20px;
     display:block;
@@ -192,7 +193,9 @@ aside h2{
 
 button{
     text-align:center;
+    cursor:pointer;
 }
+
 
 button#post_note{
     left:0px;
@@ -239,7 +242,7 @@ button#annotate_button{
     font-size:14px;
     text-align:center;
     background: #0854C7;
-    margin-right:50px;
+    margin-right:15px;
 }
 
 button#save_annotation_button{
@@ -253,9 +256,10 @@ width:114px;
     background: #A12F18;
 }
 
-button#save_annotation_button.unsavable{
-    background:rgba(161, 47, 24, 0.48);
-}
+
+#toolbar button:hover{
+    opacity:.8;
+} 
 
 button#compose{
     width:150px;
@@ -318,6 +322,7 @@ button#compose{
     color:red;
     
 }
+
 
 
 
