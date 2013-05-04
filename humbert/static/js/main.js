@@ -273,29 +273,45 @@ $(document).ready(function(){
 FONT_SIZE = 12;
 
 //when we add things like profile pic etc... we'll want to add to this size.
-STANDARD_PADDING_BETWEEN_COMMENTS = 12;
+STANDARD_PADDING_BETWEEN_COMMENTS = 48;
 
 var comments = []
-Comment = function(offset, first_span, last_span, text){
+Comment = function(offset, first_span, last_span, text, author){
     this.offset = offset;
     this.first_span = first_span;
     this.last_span = last_span;
     this.text = text;
+    this.author = author;
 }
 
 add_comment = function(offset, first_span, last_span, text){
-    comment = new Comment(offset, first_span, last_span, text);
+    author = USERNAME;
+    comment = new Comment(offset, first_span, last_span, text, author);
     //position comment in stack based on its offset
     position_comment_in_stack(comment);
     $('.comment').remove();
     comments.push(comment);
+    comments.sort(compare_comments);
     display_comments();
+    //sort the comments as a cleanup of sorts
+}
+
+compare_comments = function(a,b){
+    if(a.first_span < b.first_span){
+        return -1;
+    }
+    if (a.first_span > b.first_span){
+        return 1;
+    }
+
+    return 0;
 }
 
 //sorts comment in stack
 position_comment_in_stack = function(comment){
     console.log(comment);
     for(var p=0; p < comments.length; p++){
+        console.log(p);
         sibling = comments[p]
         console.log(sibling);
         
@@ -306,19 +322,24 @@ position_comment_in_stack = function(comment){
 
         else if(sibling.offset > comment.offset){
             diff = sibling.offset - comment.offset;
-            //do they collide?
             if(diff < calculate_comment_height_from_length(comment.text.length)){
-//                sibling.offset = comment.offset + 300;
-                sibling.offset = comment.offset + calculate_comment_height_from_length(comment.text.length) + STANDARD_PADDING_BETWEEN_COMMENTS;
+                sibling.offset = comment.offset + calculate_comment_height_from_length(comment.text.length); //+ STANDARD_PADDING_BETWEEN_COMMENTS;
                 position_comment_in_stack(sibling);
             }
-        } else {
-         //   diff = comment.offset - sibling.offset;
+        } else if(comment.offset > sibling.offset) {
             diff = comment.offset - sibling.offset;
             if(diff < calculate_comment_height_from_length(sibling.text.length)){
-                //comment.offset = sibling.offset + 300;
-                comment.offset = sibling.offset + calculate_comment_height_from_length(sibling.text.length) + STANDARD_PADDING_BETWEEN_COMMENTS;
+                comment.offset = sibling.offset + calculate_comment_height_from_length(sibling.text.length); //+ STANDARD_PADDING_BETWEEN_COMMENTS;
                 position_comment_in_stack(comment);
+            }
+        }
+
+        else {
+            //they have the same offset but different start and last spans
+            if(comment.first_span < sibling.first_span){
+                sibling.offset = comment.offset + calculate_comment_height_from_length(comment.text.length);
+            } else {
+                comment.offset = sibling.offset + calculate_comment_height_from_length(sibling.text.length);
             }
         }
 
@@ -330,7 +351,8 @@ position_comment_in_stack = function(comment){
 calculate_comment_height_from_length = function(comment_length){
     
     //50 is how many characters can fit in horizontal space
-    comment_height = (Math.floor(comment_length/50) + 1) * FONT_SIZE;
+    //ESSENTIALLY LINES * FONTSIZE
+    comment_height = (Math.floor(comment_length/50) + 1) * FONT_SIZE + STANDARD_PADDING_BETWEEN_COMMENTS;
     
     console.log('height is' + comment_height);
     return comment_height;
@@ -348,7 +370,7 @@ calculate_comment_height_from_length = function(comment_length){
 
         $.post("/ajax/create_comment", data);
         //display comment 
-                display_published_higlight(start_span, end_span, comment);
+        display_published_higlight(start_span, end_span, comment);
         add_comment($("#" + start_span).offset().top, start_span, end_span, comment);
     }
 
@@ -369,9 +391,12 @@ display_comments = function(){
 
     for(var j=0; j< comments.length; j++){
         comment = comments[j];
-        html = "<div class='comment' style='top:" + comment.offset + "px'>" + comment.text + " </div>";
+        author_html = "<div class='comment_author'>" + comment.author + "</div>";
+        author_html = "";
+        html = "<div class='comment' style='top:" + comment.offset + "px'>" + author_html + comment.text + " </div>";
         $('aside').append(html);
     }
 }
+
 
 

@@ -96,6 +96,7 @@ def create_annotation(request):
     #here we have a text. let's create an annotation for the guy
     annotation_id = Annotation.make_annotation(text_info, user_id)
     c['annotation_id'] = annotation_id
+    c['username'] = request.user.username
     return render_to_response('annotation.html', c)
 
 
