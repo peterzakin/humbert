@@ -394,6 +394,7 @@ display_comments = function(){
     for(var j=0; j< comments.length; j++){
         comment = comments[j];
         author_html = "<div class='comment_author'>" + comment.author + "</div>";
+        author_html += "<div class='comment_photo'><img src=" + USER_PHOTO_URL + "/></div>";
 //        author_html = "";
         html = "<div class='comment' style='top:" + comment.offset + "px'>" + author_html + comment.text + " </div>";
         $('aside').append(html);

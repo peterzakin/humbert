@@ -12,7 +12,6 @@ from django.contrib.auth import logout
 from model.Annotation import Annotation, Comment
 from model.Text import Text
 
-
 def home(request):
     c = RequestContext(request)
     if request.user.is_authenticated():
@@ -97,6 +96,7 @@ def create_annotation(request):
     annotation_id = Annotation.make_annotation(text_info, user_id)
     c['annotation_id'] = annotation_id
     c['username'] = request.user.username
+    c['user'] = request.user
     return render_to_response('annotation.html', c)
 
 
