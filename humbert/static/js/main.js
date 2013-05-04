@@ -250,10 +250,12 @@ $(document).ready(function(){
 
         //save comment
     save_comment = function(){
-        comment = $('#annotation_comment').val();
-        console.log(comment);
+        comment_text = $('#annotation_comment').val();
         //start and last span are globals 
-        post_comment(start, last_span, comment);
+        display_published_higlight(start, last_span, comment_text);
+        add_comment($("#" + start).offset().top, start, last_span, comment_text);
+  
+//        post_comment(start, last_span, comment_text);
         stop_highlighting();
     }
     
@@ -338,8 +340,10 @@ position_comment_in_stack = function(comment){
             //they have the same offset but different start and last spans
             if(comment.first_span < sibling.first_span){
                 sibling.offset = comment.offset + calculate_comment_height_from_length(comment.text.length);
+                position_comment_in_stack(sibling);
             } else {
                 comment.offset = sibling.offset + calculate_comment_height_from_length(sibling.text.length);
+                position_comment_in_stack(comment);
             }
         }
 
@@ -369,10 +373,7 @@ calculate_comment_height_from_length = function(comment_length){
             'end_span': String(end_span)
         };
 
-        $.post("/ajax/create_comment", data);
-        //display comment 
-        display_published_higlight(start_span, end_span, comment);
-        add_comment($("#" + start_span).offset().top, start_span, end_span, comment);
+        $.post("/ajax/create_comment", data); 
     }
 
     display_published_higlight = function(start_span, end_span, comment){
@@ -398,6 +399,8 @@ display_comments = function(){
         $('aside').append(html);
     }
 }
+
+
 
 
 
