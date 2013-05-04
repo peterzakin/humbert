@@ -348,11 +348,12 @@ position_comment_in_stack = function(comment){
     
 }
 
+var COMMENT_HEADER_SIZE = 12;
 calculate_comment_height_from_length = function(comment_length){
     
     //50 is how many characters can fit in horizontal space
-    //ESSENTIALLY LINES * FONTSIZE
-    comment_height = (Math.floor(comment_length/50) + 1) * FONT_SIZE + STANDARD_PADDING_BETWEEN_COMMENTS;
+    //ESSENTIALLY LINES * FONTSIZE + 1 LINE FOR 
+    comment_height = (Math.floor(comment_length/50) + 1) * FONT_SIZE + STANDARD_PADDING_BETWEEN_COMMENTS + COMMENT_HEADER_SIZE;
     
     console.log('height is' + comment_height);
     return comment_height;
@@ -392,11 +393,12 @@ display_comments = function(){
     for(var j=0; j< comments.length; j++){
         comment = comments[j];
         author_html = "<div class='comment_author'>" + comment.author + "</div>";
-        author_html = "";
+//        author_html = "";
         html = "<div class='comment' style='top:" + comment.offset + "px'>" + author_html + comment.text + " </div>";
         $('aside').append(html);
     }
 }
+
 
 
 
