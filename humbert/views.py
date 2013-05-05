@@ -43,7 +43,7 @@ def logout_view(request):
 def create_annotation(request):
     """ 
     POST to create_annotation creates a text. Does not actually create an Annotation record
-    Renders annotation_editing_view.
+    Redirects to an annotation_editing_view.
     """
     
     #takes a post
@@ -58,25 +58,39 @@ def create_annotation(request):
 
     if url:
         text_info = Text.get_or_create_text_by_url(url)
-        c['text'] = text_info.get('text')
-        c['author'] = text_info.get('author')
-        c['url'] = url
-        c['title'] = text_info.get('title')
+        text_id = text_info.get('_id')
     elif text:
         c['text'] = text
-        Text.add_text({'text':text})
+        text_id = Text.add_text({'text':text})
+    else:
+        redirect('/')
+        
+    redirect('/edit/%s' % text_id)
+
+
+def edit_annotation(request, text_id):
+    c = RequestContext(request)
+    if text_id is not None and request.user.is_authenticated():
+        text_info = Text.find_by_id(text_id)
     else:
         redirect('/')
 
-    #here we have a text. let's create an annotation for the guy
-#    annotation_id = Annotation.make_annotation(text_info, user_id)
- #   c['annotation_id'] = annotation_id
     c['user'] = request.user
     c['annotation_username'] = request.user.username
     c['annotation_user_id'] = request.user.id
-    c['text_id'] = text_info.get('_id')
+    c['text_id'] = text_id
+    c['text'] = text_info.get('text')
     c['edit_mode'] = True
+    
+    annotation = Annotation.find_by_user_id_and_text_id(request.user.id, text_id)
+    
+    comments = []
+    if annotation:
+        comments = annotation.get('comments')
+    
+    c['initial_comments'] = simplejson.dumps(comments)
     return render_to_response('annotation.html', c)
+
 
 def render_annotation(request, username, text_id):
     annotation_user = Profile.objects.get(username=username)
@@ -86,16 +100,22 @@ def render_annotation(request, username, text_id):
     c['annotation_user_id'] = annotation_user.id
     c['text_id'] = text_id
     c['text'] = text_info.get('text')
-    comments = Annotation.find_by_user_id_and_text_id(annotation_user.id, text_id).get('comments')
+    annotation = Annotation.find_by_user_id_and_text_id(annotation_user.id, text_id)
+    
+    comments = []
+    if annotation:
+        comments = annotation.get('comments')
+    
     c['initial_comments'] = simplejson.dumps(comments)
     return render_to_response('annotation.html', c)
+
 
 #AJAX FUNCTIONS
 def save_annotation(request):
     comments = simplejson.loads(request.POST.get('comments'))
     user_id = request.user.id
     text_id = request.POST.get('text_id')
-    
+
     annotation_id = None
     if comments and user_id:
         annotation_id = Annotation.save_annotation(user_id, text_id, comments)

@@ -26,15 +26,19 @@ class Annotation(mongoMixIn):
     @classmethod
     def save_annotation(klass, user_id, text_id, comments):
         doc = {
-            'user_id': user_id,
-            'text_id': text_id,
-            'comments': comments,
+            "$set": {'user_id': user_id,
+                     'text_id': text_id,
+                     'comments': comments,
+                     }
             }
-        return klass._add_annotation(doc)
+
+        spec = {
+            'user_id':user_id,
+            'text_id':text_id
+            }
         
-    @classmethod
-    def _add_annotation(klass, doc):
-        return klass.mdbc().insert(doc) 
+        response = klass.mdbc().update(spec, doc, upsert=True, safe=True)
+        return response
 
     @classmethod
     def find_by_user_id(klass, user_id):
