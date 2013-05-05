@@ -56,6 +56,7 @@ aside{
 .comment_author{
     font-weight:600;
     color:#0B486B;
+    display:block;
 }
 
 #annotation{
@@ -322,6 +323,7 @@ button#compose{
     color:red;
     
 }
+
 
 
 

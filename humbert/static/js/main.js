@@ -270,6 +270,7 @@ $(document).ready(function(){
         data['text_id'] = TEXT_ID;
         data['user_id'] = USER_ID;
         data['comments'] = JSON.stringify(comments);
+        data['text_title'] = TEXT_TITLE;
         var response = $.post("/ajax/save_annotation", data, function(data){
             console.log(data);
             window.ANNOTATION_ID = data;
@@ -405,7 +406,7 @@ display_comments = function(){
     //IF THERES BEEN A CHANGE, THEN WE NEED TO REMOVE THE OLD ONES AND REFRESH    
     for(var j=0; j< comments.length; j++){
         comment = comments[j];
-        author_html = "<div class='comment_author'>" + comment.author + "</div>";
+        author_html = "<a class='comment_author' href='/" + comment.author + "'>" + comment.author + "</a>";
         author_html += "<div class='comment_photo'><img src=" + USER_PHOTO_URL + "/></div>";
         html = "<div class='comment' style='top:" + comment.offset + "px'>" + author_html + comment.text + " </div>";
         $('aside').append(html);
@@ -415,6 +416,7 @@ display_comments = function(){
         display_published_higlight(comment.first_span, comment.last_span, comment.text);
     }
 }
+
 
 
 

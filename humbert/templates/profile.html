@@ -1,11 +1,15 @@
-{% include 'header.html' %}
-<body>
-username is: {{ username }}
+{% include 'includes/head.html' %}
+<body class="relative">
+  <div class="container">
+    {% for annotation in annotations %}
+    <a href="/{{profile_username}}/{{annotation.text_id}}">{{annotation.text_title}}</a>
+    {% endfor %}
+  </div>
 
+</body>
 
-  <div class='peter'>
-    {{ peter }}
-    </div>
 
 <!-- closes body and html tags -->
 {% include 'footer.html' %}
+
+

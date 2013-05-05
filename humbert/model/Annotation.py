@@ -24,10 +24,11 @@ class Annotation(mongoMixIn):
     }
     """
     @classmethod
-    def save_annotation(klass, user_id, text_id, comments):
+    def save_annotation(klass, user_id, text_id, text_title, comments):
         doc = {
             "$set": {'user_id': user_id,
                      'text_id': text_id,
+                     'text_title': text_title,
                      'comments': comments,
                      }
             }

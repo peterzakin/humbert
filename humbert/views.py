@@ -24,14 +24,17 @@ def home(request):
 
 
 def render_profile(request, *args, **kwargs):
+    """
+    Prints out the annotations that this user has made
+    """
+    c = RequestContext(request)
     username = kwargs.get('username')
-    c = {}
-    profile_user = User.find_by_username(username)
-    if profile_user is not None:
 
+    user = User.objects.get(username=username)
+    if user is not None:
         #get list of annotations
-        c['annotations'] = Annotation.find_by_user_id(profile_user.id)
-        c['username'] = username
+        c['annotations'] = Annotation.find_by_user_id(user.id)
+        c['profile_username'] = username
     return render_to_response('profile.html', c)
 
 def logout_view(request):
@@ -80,6 +83,7 @@ def edit_annotation(request, text_id):
     c['annotation_user_id'] = request.user.id
     c['text_id'] = text_id
     c['text'] = text_info.get('text')
+    c['text_title'] = text_info.get('title')
     c['edit_mode'] = True
     
     annotation = Annotation.find_by_user_id_and_text_id(request.user.id, text_id)
@@ -115,10 +119,11 @@ def save_annotation(request):
     comments = simplejson.loads(request.POST.get('comments'))
     user_id = request.user.id
     text_id = request.POST.get('text_id')
+    text_title = request.POST.get('text_title')
 
     annotation_id = None
-    if comments and user_id:
-        annotation_id = Annotation.save_annotation(user_id, text_id, comments)
+    if comments and user_id and text_id and text_title:
+        annotation_id = Annotation.save_annotation(user_id, text_id, text_title, comments)
 
     if annotation_id is None:
         raise Exception("hell fuck")
