@@ -60,6 +60,6 @@ class mongoMixIn(object):
 
     @classmethod
     def _idify(klass, oid):
-        if type(oid) == str:
+        if type(oid) == str or type(oid) == unicode:
             oid = ObjectId(oid)
         return oid

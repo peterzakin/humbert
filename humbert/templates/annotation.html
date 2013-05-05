@@ -4,10 +4,14 @@
  USER_PHOTO_URL = "https://graph.facebook.com/" + USERNAME + "/picture";
  TEXT_ID = "{{ text_id }}";
  USER_ID = "{{ annotation_user_id }}";
+ ANNOTATION_ID = "{{ANNOTATION_ID}}";
+ INITIAL_COMMENTS = {{initial_comments|safe}};
 </script>
 <body class='relative'>
   <input type="hidden" id="annotation_id" value="{{annotation_id}}" />
 
+
+  {% if edit_mode %}
   <div id="compose_screen">
     <div id="highlighted_text">
     </div>
@@ -19,22 +23,23 @@
       <button id="discard">Discard</button>
     </div>
   </div>
+  {% endif %}
 
 
 <div class="container">
 
 <aside class="left">
-{% for comment in comments %}
-
-
-{% endfor %}
 </aside>
 
 <section class="right" id="main_annotation_content">
+
+  {% if edit_mode %}
   <div id="toolbar">
     <button id="annotate_button">Annotate</button>
     <button id="save_annotation_button">Save</button>
   </div>
+  {% endif %}
+
 <div id="annotation">
 
 {% autoescape off %}

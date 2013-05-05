@@ -18,6 +18,7 @@ urlpatterns = patterns('',
       url(r'^ajax/fb_login/?$', fb_login_with_token_and_id),
 
       url(r'^(?P<username>(\w)+)/?$', render_profile),
+      url(r'^(?P<username>(\w)+)/(?P<text_id>(\w)+)/?$', render_annotation),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

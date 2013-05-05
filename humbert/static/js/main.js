@@ -1,6 +1,10 @@
 $(document).ready(function(){
     var ANNOTATION_ID = $('#annotation_id').val();
+    comments = window.INITIAL_COMMENTS;
 
+    //display comments is called immediately
+    display_comments();
+    
     //starts highlighting mode
     start_highlighting = function(){
         isHighlighting = true;
@@ -255,7 +259,7 @@ $(document).ready(function(){
     save_comment = function(){
         comment_text = $('#annotation_comment').val();
         //start and last span are globals 
-        display_published_higlight(start, last_span, comment_text);
+//        display_published_higlight(start, last_span, comment_text);
         add_comment($("#" + start).offset().top, start, last_span, comment_text);
         stop_highlighting();
     }
@@ -266,7 +270,11 @@ $(document).ready(function(){
         data['text_id'] = TEXT_ID;
         data['user_id'] = USER_ID;
         data['comments'] = JSON.stringify(comments);
-        var response = $.post("/ajax/save_annotation", data); 
+        var response = $.post("/ajax/save_annotation", data, function(data){
+            console.log(data);
+            window.ANNOTATION_ID = data;
+
+        }); 
         console.log(response);
     }
 
@@ -279,23 +287,11 @@ $(document).ready(function(){
     
 });
 
-
-//displays comments in aside.
-
-//get offset of their starting span.
-//position them absolutely with that offset.
-//when adding a new comment, check to see if it would collide with an old one
-//if it collides, push the earlier one on top, to where its offset determines it hsould be
-//push the later afterwards (earlier span + comment height + padding)
-
-//make this recursive 
-
 FONT_SIZE = 12;
 
 //when we add things like profile pic etc... we'll want to add to this size.
 STANDARD_PADDING_BETWEEN_COMMENTS = 48;
 
-var comments = []
 Comment = function(offset, first_span, last_span, text, author){
     this.offset = offset;
     this.first_span = first_span;
@@ -407,16 +403,19 @@ calculate_comment_height_from_length = function(comment_length){
 display_comments = function(){
     //WHAT SHOULD WE DO ABOUT COMMENTS THAT ALREADY EXIST.
     //IF THERES BEEN A CHANGE, THEN WE NEED TO REMOVE THE OLD ONES AND REFRESH    
-
     for(var j=0; j< comments.length; j++){
         comment = comments[j];
         author_html = "<div class='comment_author'>" + comment.author + "</div>";
         author_html += "<div class='comment_photo'><img src=" + USER_PHOTO_URL + "/></div>";
-//        author_html = "";
         html = "<div class='comment' style='top:" + comment.offset + "px'>" + author_html + comment.text + " </div>";
         $('aside').append(html);
+
+        //display highlight
+        console.log(comment);
+        display_published_higlight(comment.first_span, comment.last_span, comment.text);
     }
 }
+
 
 
 

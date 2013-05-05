@@ -75,8 +75,20 @@ def create_annotation(request):
     c['annotation_username'] = request.user.username
     c['annotation_user_id'] = request.user.id
     c['text_id'] = text_info.get('_id')
+    c['edit_mode'] = True
     return render_to_response('annotation.html', c)
 
+def render_annotation(request, username, text_id):
+    annotation_user = Profile.objects.get(username=username)
+    text_info = Text.find_by_id(text_id)
+    c = RequestContext(request)
+    c['annotation_username'] = annotation_user.username
+    c['annotation_user_id'] = annotation_user.id
+    c['text_id'] = text_id
+    c['text'] = text_info.get('text')
+    comments = Annotation.find_by_user_id_and_text_id(annotation_user.id, text_id).get('comments')
+    c['initial_comments'] = simplejson.dumps(comments)
+    return render_to_response('annotation.html', c)
 
 #AJAX FUNCTIONS
 def save_annotation(request):

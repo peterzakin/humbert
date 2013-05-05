@@ -30,10 +30,8 @@ class Annotation(mongoMixIn):
             'text_id': text_id,
             'comments': comments,
             }
-        response =  klass._add_annotation(doc)
-        import pdb; pdb.set_trace()
-        return response
-
+        return klass._add_annotation(doc)
+        
     @classmethod
     def _add_annotation(klass, doc):
         return klass.mdbc().insert(doc) 
@@ -42,3 +40,11 @@ class Annotation(mongoMixIn):
     def find_by_user_id(klass, user_id):
         spec = {'user_id':user_id}
         return klass.mdbc().find(spec)
+
+    @classmethod
+    def find_by_user_id_and_text_id(klass, user_id, text_id):
+        spec = {
+            'user_id':user_id,
+            'text_id':text_id,
+            }
+        return klass.mdbc().find_one(spec)
