@@ -1,7 +1,9 @@
 {% include 'includes/head.html' %}
 <script> 
- USERNAME = "{{ username }}";
+ USERNAME = "{{ annotation_username }}";
  USER_PHOTO_URL = "https://graph.facebook.com/" + USERNAME + "/picture";
+ TEXT_ID = "{{ text_id }}";
+ USER_ID = "{{ annotation_user_id }}";
 </script>
 <body class='relative'>
   <input type="hidden" id="annotation_id" value="{{annotation_id}}" />

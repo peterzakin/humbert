@@ -251,16 +251,31 @@ $(document).ready(function(){
         return false;
     });
 
-        //save comment
+        //save comment does nothing to db.
     save_comment = function(){
         comment_text = $('#annotation_comment').val();
         //start and last span are globals 
         display_published_higlight(start, last_span, comment_text);
         add_comment($("#" + start).offset().top, start, last_span, comment_text);
-  
-//        post_comment(start, last_span, comment_text);
         stop_highlighting();
     }
+    
+    //save annotation sends all of the comments to db and saves annotation itself
+    save_annotation = function(){
+        var data = {};
+        data['text_id'] = TEXT_ID;
+        data['user_id'] = USER_ID;
+        data['comments'] = JSON.stringify(comments);
+        var response = $.post("/ajax/save_annotation", data); 
+        console.log(response);
+    }
+
+    $('#save_annotation_button').click(function(){
+        if(comments.length > 0){
+            save_annotation();
+        }
+
+    });
     
 });
 
@@ -298,7 +313,6 @@ add_comment = function(offset, first_span, last_span, text){
     comments.push(comment);
     comments.sort(compare_comments);
     display_comments();
-    //sort the comments as a cleanup of sorts
 }
 
 compare_comments = function(a,b){
@@ -403,6 +417,7 @@ display_comments = function(){
         $('aside').append(html);
     }
 }
+
 
 
 

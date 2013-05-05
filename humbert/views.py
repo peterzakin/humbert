@@ -9,8 +9,9 @@ from django.template import RequestContext
 from model.User import User, Profile
 from django.http import HttpResponse
 from django.contrib.auth import logout
-from model.Annotation import Annotation, Comment
+from model.Annotation import Annotation
 from model.Text import Text
+import simplejson
 
 def home(request):
     c = RequestContext(request)
@@ -33,36 +34,6 @@ def render_profile(request, *args, **kwargs):
         c['username'] = username
     return render_to_response('profile.html', c)
 
-
-def render_annotation(request, *args, **kwargs):
-    username = kwargs.get('username')
-
-    c = {}
-    c['username'] = username
-    
-    url = "http://www.paulgraham.com/start.html"
-    #create annotation if the text doesn't exist
-    annotations = Annotation.find_by_url(url)
-    if annotations.count() <= 0:
-        #create new annotation
-        try:
-            text_info = DiffBot.get_article(url)
-            doc = {
-                'url':url,
-                'text':text
-                }
-            Annotation.add_annotation(doc)
-            c['text'] = text
-        except:
-            raise Exception('oh shit diffbot')
-    else:
-        #1 or more annotations exist
-        c['text'] = annotations[0].get('text')
-
-    return render_to_response('annotation.html', c)
-
-
-
 def logout_view(request):
     # /logout
     logout(request)
@@ -70,6 +41,11 @@ def logout_view(request):
 
 
 def create_annotation(request):
+    """ 
+    POST to create_annotation creates a text. Does not actually create an Annotation record
+    Renders annotation_editing_view.
+    """
+    
     #takes a post
     if request.method != 'POST':
         redirect('/')
@@ -93,28 +69,30 @@ def create_annotation(request):
         redirect('/')
 
     #here we have a text. let's create an annotation for the guy
-    annotation_id = Annotation.make_annotation(text_info, user_id)
-    c['annotation_id'] = annotation_id
-    c['username'] = request.user.username
+#    annotation_id = Annotation.make_annotation(text_info, user_id)
+ #   c['annotation_id'] = annotation_id
     c['user'] = request.user
+    c['annotation_username'] = request.user.username
+    c['annotation_user_id'] = request.user.id
+    c['text_id'] = text_info.get('_id')
     return render_to_response('annotation.html', c)
 
 
 #AJAX FUNCTIONS
-def create_comment(request):
-    import pdb; pdb.set_trace()
-    post_vars = request.POST
-    start_span = post_vars.get('start_span')
-    end_span = post_vars.get('end_span')
-    comment = post_vars.get('comment')
-    annotation_id = post_vars.get('annotation_id')
+def save_annotation(request):
+    comments = simplejson.loads(request.POST.get('comments'))
+    user_id = request.user.id
+    text_id = request.POST.get('text_id')
+    
+    annotation_id = None
+    if comments and user_id:
+        annotation_id = Annotation.save_annotation(user_id, text_id, comments)
 
-    if start_span and end_span and comment and annotation_id:
-        comment = Comment(start_span, end_span, comment)
-        Annotation.add_comment_to_annotation(comment, annotation_id)
-    else:
-        raise Exception('something went wrong');
+    if annotation_id is None:
+        raise Exception("hell fuck")
 
+    return HttpResponse(annotation_id)
+        
 
 def fb_login_with_token_and_id(request):
     #check to see if we have a user with this fb_id
