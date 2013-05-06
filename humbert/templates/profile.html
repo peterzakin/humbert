@@ -1,8 +1,22 @@
 {% include 'includes/head.html' %}
 <body class="relative">
+  <header class="standard">
+    <div class="container">
+      <h2>Humbert</h2>
+    </div>
+ </header>
+
   <div class="container">
+    <aside class='left'>
+      <div class="profile_info">
+      <img src="{{profile_user_img}}" />
+      </div>
+    </aside>
+    
     {% for annotation in annotations %}
+    <div>
     <a href="/{{profile_username}}/{{annotation.text_id}}">{{annotation.text_title}}</a>
+    </div>
     {% endfor %}
   </div>
 

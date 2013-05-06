@@ -56,7 +56,21 @@ aside{
 .comment_author{
     font-weight:600;
     color:#0B486B;
-    display:block;
+}
+
+.profile_info{
+    background:white;
+    padding:2px;
+    box-shadow:0px 0px 4px #ccc;
+    width:200px;
+    text-align:center;
+}
+
+header.standard{
+}
+
+.profile_info img{
+    vertical-align:middle;
 }
 
 #annotation{

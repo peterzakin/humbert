@@ -35,7 +35,9 @@ def render_profile(request, *args, **kwargs):
         #get list of annotations
         c['annotations'] = Annotation.find_by_user_id(user.id)
         c['profile_username'] = username
-    return render_to_response('profile.html', c)
+        c['profile_user_img'] = _get_fb_pic_url(username) + "?width=200"
+        return render_to_response('profile.html', c)
+    raise Exception("no user")
 
 def logout_view(request):
     # /logout
@@ -51,7 +53,7 @@ def create_annotation(request):
     
     #takes a post
     if request.method != 'POST':
-        redirect('/')
+        return redirect('/')
 
     c = RequestContext(request)
     user_id = request.user.id
@@ -66,9 +68,9 @@ def create_annotation(request):
         c['text'] = text
         text_id = Text.add_text({'text':text})
     else:
-        redirect('/')
+        return redirect('/')
         
-    redirect('/edit/%s' % text_id)
+    return redirect('/edit/%s' % text_id)
 
 
 def edit_annotation(request, text_id):
@@ -76,7 +78,7 @@ def edit_annotation(request, text_id):
     if text_id is not None and request.user.is_authenticated():
         text_info = Text.find_by_id(text_id)
     else:
-        redirect('/')
+        return redirect('/')
 
     c['user'] = request.user
     c['annotation_username'] = request.user.username
@@ -155,3 +157,7 @@ def fb_login_with_token_and_id(request):
 
     print user.__dict__
     return HttpResponse('Hey client side, we just logged u in. -serverside out')
+
+def _get_fb_pic_url(username):
+    url = "https://graph.facebook.com/%s/picture" % (username)
+    return url

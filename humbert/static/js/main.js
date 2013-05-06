@@ -406,7 +406,7 @@ display_comments = function(){
     //IF THERES BEEN A CHANGE, THEN WE NEED TO REMOVE THE OLD ONES AND REFRESH    
     for(var j=0; j< comments.length; j++){
         comment = comments[j];
-        author_html = "<a class='comment_author' href='/" + comment.author + "'>" + comment.author + "</a>";
+        author_html = "<a class='comment_author' href='/" + comment.author + "'>" + comment.author + "</a> <br />";
         author_html += "<div class='comment_photo'><img src=" + USER_PHOTO_URL + "/></div>";
         html = "<div class='comment' style='top:" + comment.offset + "px'>" + author_html + comment.text + " </div>";
         $('aside').append(html);
