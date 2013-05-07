@@ -6,6 +6,7 @@ body{
 
 header{
 	margin-bottom:40px;
+    overflow:auto;
 }
 
 .container{
@@ -27,6 +28,64 @@ aside{
     position:relative;
 }
 
+aside.profile{
+    position:fixed;
+    left:0;
+    top:0;
+    border-right:solid thin #ccc;
+    height:100%;
+    width:300px;
+}
+
+.profile_pic{
+    width:70px;
+    height:70px;
+    -moz-border-radius:35px;
+    -webkit-border-radius:35px;
+    border-radius:35px;
+    display:block;
+    margin:0 auto;
+    margin-bottom:10px;
+    font-weight:600;
+    padding:2px;
+    box-shadow:0px 0px 2px black;
+}
+
+.profile_signature{
+    font-family:futura;
+    font-size:18px;
+    text-align:center;
+    
+}
+
+.annotations_list{
+    margin-top:30px;
+}
+
+.annotations_list a{
+    text-decoration:none;
+    color:inherit;
+    margin-bottom:5px;
+    display:block;
+}
+
+#top_toolbar{
+    position:absolute;
+    right:20px;
+    top:20px;
+}
+
+#top_toolbar a{
+    font-size:12px;
+}
+
+.annotations_list a:hover{
+    color:#0B486B;
+}
+#profile.container{
+    width:500px;
+    
+}
 #toolbar{
     margin-bottom:40px;
     margin-top:20px;
@@ -74,11 +133,15 @@ header.standard{
 }
 
 #annotation{
-    width: 600px;
-    font-size:14px;
+    width: 650px;
     position:relative;
     float:right;
     font-family:Helvetica;
+}
+
+#annotation p{
+    font-size:20px;
+    line-height:1.5;
 }
 
 #annotation img{
@@ -337,6 +400,7 @@ button#compose{
     color:red;
     
 }
+
 
 
 
