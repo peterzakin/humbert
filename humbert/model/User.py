@@ -12,7 +12,7 @@ from lib.Errors import Errors
 
 class Profile(User):
     fb_id = models.IntegerField(default=0)
-    access_token = models.CharField(max_length=200)
+    access_token = models.CharField(max_length=400)
 
     class Meta:
         app_label = "humbert"
