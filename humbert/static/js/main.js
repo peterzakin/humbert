@@ -3,8 +3,9 @@ $(document).ready(function(){
     comments = window.INITIAL_COMMENTS;
 
     //display comments is called immediately
-    display_comments();
-    
+    if (comments){
+        display_comments();
+    }
     //starts highlighting mode
     start_highlighting = function(){
         isHighlighting = true;
@@ -411,6 +412,7 @@ display_comments = function(){
         display_published_higlight(comment.first_span, comment.last_span, comment.text);
     }
 }
+
 
 
 

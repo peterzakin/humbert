@@ -249,6 +249,7 @@ aside h2{
     display:none;
     height:100%;
     width:400px;
+    z-index:1000;
 }
 
 #compose_screen textarea{
@@ -333,8 +334,11 @@ button#annotate_button{
     font-size:14px;
     text-align:center;
     background: #0854C7;
-    margin-right:15px;
+    position:absolute;
+    left:50px;
+    top:20px;
 }
+
 
 button#save_annotation_button{
 //    padding:26px;
@@ -417,6 +421,7 @@ button#compose{
     margin-left:40px;
 
 }
+
 
 
 
