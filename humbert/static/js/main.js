@@ -255,13 +255,14 @@ $(document).ready(function(){
         return false;
     });
 
-        //save comment does nothing to db.
+    
     save_comment = function(){
         comment_text = $('#annotation_comment').val();
         //start and last span are globals 
 //        display_published_higlight(start, last_span, comment_text);
         add_comment($("#" + start).offset().top, start, last_span, comment_text);
         stop_highlighting();
+        save_annotation(); //makes the db call
     }
     
     //save annotation sends all of the comments to db and saves annotation itself
@@ -278,13 +279,6 @@ $(document).ready(function(){
         }); 
         console.log(response);
     }
-
-    $('#save_annotation_button').click(function(){
-        if(comments.length > 0){
-            save_annotation();
-        }
-
-    });
     
 });
 

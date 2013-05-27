@@ -1,3 +1,6 @@
+html{
+    height:100%;
+}
 body{
     font-family:"avenir";
     height:100%;
@@ -12,6 +15,7 @@ header{
 .container{
     margin: 0 auto;
     width:960px;
+    height:100%;
     position:relative;
 }
 
@@ -21,6 +25,7 @@ section#create{
 }
 
 aside{
+    height:100%;
     width:280px;
     margin-right:20px;
     float:left;
@@ -116,7 +121,6 @@ img.annotation_pic{
     box-shadow: 0px 0px 2px #424242;
     display:block;
     float:left;
-
     position:relative;
     top:4px;
     left:-10px;
@@ -143,10 +147,9 @@ header.standard{
 }
 
 #annotation{
-    width: 650px;
     position:relative;
-    float:right;
     font-family:Helvetica;
+    clear:both;
 }
 
 #annotation p{
@@ -407,9 +410,14 @@ button#compose{
 }
 
 .published_highlight{
-    color:red;
-    
+    color:#0854C7;
 }
+
+#annotation ol, #annotation ul{
+    margin-left:40px;
+
+}
+
 
 
 
